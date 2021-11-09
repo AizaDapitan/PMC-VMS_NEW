@@ -269,7 +269,9 @@ class VehicleRequestController extends Controller
         
         $fuel_types = FuelTypes::all();
         $units = Unit::all();
-        $drivers = Drivers::all();
+        $drivers = Drivers::where('isActive', '<>', '1')->Orwhere('isActive', null)->get()->sortBy('driver_name');
+
+        // $drivers = Drivers::all();
 
         $available_units = '<option selected="selected">-- Select Vehicle --</option>';
         $unavailable_units = '';

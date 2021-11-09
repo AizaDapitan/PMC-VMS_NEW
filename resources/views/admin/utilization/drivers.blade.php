@@ -21,13 +21,15 @@
             @elseif(Request::has('activated'))
             <div class="alert alert-success">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <strong>Record Activated</strong>
+                <strong>Record Deactivated</strong>
+                <!-- <strong>Record Activated</strong> -->
             </div>
         
             @elseif(Request::has('deactivated'))
             <div class="alert alert-success">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <strong>Record Deactivated</strong>
+                <strong>Record Activated</strong>
+                <!-- <strong>Record Deactivated</strong> -->
             </div>
             @endif
 
@@ -43,8 +45,7 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="">Name:</label>
-                                    <input type="text" class="form-control" id="dname" name="dname"
-                                        placeholder="Last, First MI">
+                                    <input type="text" class="form-control" id="dname" name="dname" placeholder="Last, First MI" required maxlength="50">
                                 </div>
                                 <br><br>
                                 <div class="form-group">
@@ -60,8 +61,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for=""> OR Add New: </label>
-                                    <input type="text" class="form-control" id="dtype2" name="dtype2"
-                                        placeholder="New Type">
+                                    <input type="text" class="form-control" id="dtype2" name="dtype2" placeholder="New Type" required maxlength="30">
                                 </div>
 
 
@@ -86,8 +86,7 @@
                             <div class="modal-body">
                                 <div class="form-group">
                                     <label for="">Name:</label>
-                                    <input type="text" class="form-control" id="edname" required name="edname"
-                                        placeholder="Last, First MI">
+                                    <input type="text" class="form-control" id="edname" required name="edname" placeholder="Last, First MI" required maxlength="50">
                                     <input type="hidden" value="" required name="edid" id="edid">
                                 </div>
                                 <br><br>
@@ -107,8 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for=""> OR Add New: </label>
-                                    <input type="text" class="form-control" id="edtype2" name="edtype2"
-                                        placeholder="New Type">
+                                    <input type="text" class="form-control" id="edtype2" name="edtype2" placeholder="New Type" required maxlength="30">
                                 </div>
 
 
@@ -256,7 +254,7 @@
     }
 
     function disable_driver(x) {
-        var r = confirm("Are you sure you want to disable this driver?");
+        var r = confirm("Are you sure you want to enable this driver?");
         if (r == true) {
             // Dirty Implementation
             let link = "{!! route('vehicle.drivers.submit',['act' => 'deactivate']) !!}";

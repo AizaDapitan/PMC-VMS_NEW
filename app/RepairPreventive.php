@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable  as AuditableContract;
 use OwenIt\Auditing\Auditable;
 
-class RepairPreventive implements AuditableContract
+class RepairPreventive extends Model implements AuditableContract
 {
 
     use Auditable;
@@ -20,5 +20,5 @@ class RepairPreventive implements AuditableContract
     protected $auditInclude = [
         'name',
         'active',
-    ];
+    ];  
 }

@@ -233,7 +233,7 @@
 							</div>
 						</div>
 					</div>
-					Hello world
+					
 					<div class="row">
 						<div class="col-md-12 margin-bottom-10" id="result">
 

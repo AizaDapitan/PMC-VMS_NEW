@@ -72,7 +72,7 @@
                     <div class="portlet-body">
                         <br>
 
-                        <table class="table table-striped table-hover" id="sample_1">
+                        <table class="table table-striped table-hover" id="sample_101">
                             <thead>
                                 <tr>
                                     <th style="width: 10%">Model</th>

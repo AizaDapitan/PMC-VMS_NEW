@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\RepairPreventive;
 use Illuminate\Http\Request;
+use App\Services\RoleRightService;
 
 class SysMaintenancePreventiveController extends Controller
 {
@@ -12,10 +13,30 @@ class SysMaintenancePreventiveController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
         $preventive = RepairPreventive::all();
-        return view('admin.maintenance.preventive',compact('preventive'));
+        return view('admin.maintenance.preventive', compact(
+            'preventive',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -37,8 +58,8 @@ class SysMaintenancePreventiveController extends Controller
     public function store(Request $request)
     {
         RepairPreventive::create([
-            'name'=> $request->get('name'),
-            'active'=> 1
+            'name' => $request->get('name'),
+            'active' => 1
         ]);
 
         return redirect()->back();
@@ -63,10 +84,26 @@ class SysMaintenancePreventiveController extends Controller
      */
     public function edit($id)
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
         $item = RepairPreventive::find($id);
         $preventive = RepairPreventive::all();
-        
-        return  view('admin.maintenance.preventive',compact('item','preventive'));
+
+        return  view('admin.maintenance.preventive', compact(
+            'item',
+            'preventive',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -94,9 +131,8 @@ class SysMaintenancePreventiveController extends Controller
     public function destroy($id)
     {
         $preventive = RepairPreventive::find($id);
-      
-        if($preventive)
-        {
+
+        if ($preventive) {
             RepairPreventive::destroy($id);
         }
 

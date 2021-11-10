@@ -11,11 +11,26 @@ use App\Unit;
 use App\UnitStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\ReportService;
+use App\Services\RoleRightService;
 
 class SysMaintenanceExportController extends Controller
 {
+    
+	public function __construct(
+		RoleRightService $roleRightService,
+		ReportService $reportService
+	) {
+		$this->reportService = $reportService;
+		$this->roleRightService = $roleRightService;
+	}
     public function export(Request $request)
     {
+        
+		$rolesPermissions = $this->roleRightService->hasPermissions("Downtime Report");
+		if (!$rolesPermissions['view']) {
+		    abort(401);
+		}
         $type = $request->route('type');
 
         switch ($type) {

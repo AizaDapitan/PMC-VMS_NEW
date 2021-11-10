@@ -33,10 +33,10 @@ class ReportsController extends Controller
 
 	public function auditLogs(Request $request)
 	{
-		// $rolesPermissions = $this->roleRightService->hasPermissions("Audit Logs");
-		// if (!$rolesPermissions['view']) {
-		//     abort(401);
-		// }
+		$rolesPermissions = $this->roleRightService->hasPermissions("Audit Logs");
+		if (!$rolesPermissions['view']) {
+		    abort(401);
+		}
 		$dateFrom = now()->toDateString();
 		$dateTo = now()->toDateString();
 		$userid = 0;
@@ -72,11 +72,11 @@ class ReportsController extends Controller
 	}
 	public function errorLogs(Request $request)
     {
-        // $rolesPermissions = $this->roleRightService->hasPermissions("Error Logs");
+        $rolesPermissions = $this->roleRightService->hasPermissions("Error Logs");
 
-        // if (!$rolesPermissions['view']) {
-        //     abort(401);
-        // }
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
         $dateFrom = now()->toDateString();
         $dateTo = now()->toDateString();
         if (isset($request->dateFrom)) {

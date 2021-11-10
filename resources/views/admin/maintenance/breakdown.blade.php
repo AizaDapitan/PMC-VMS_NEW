@@ -16,8 +16,10 @@
                     <div class="tabbable portlet-tabs">
                         <ul class="nav nav-tabs">
                             <li class="">
+                                @if($create)
                                 <a href="#portlet_tab_2" data-toggle="tab">
                                 Add New </a>
+                                @endif
                             </li>
                             <li class="active">
                                 <a href="#portlet_tab_1" data-toggle="tab">
@@ -54,7 +56,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions" style="margin-left:20px;">
+                                                    @if($edit)
                                                     <button type="submit" class="btn btn-sm blue">Update</button>
+                                                    @else
+                                                    <button disabled type="submit" class="btn btn-sm blue">Update</button>
+                                                    @endif
                                                     <a href="{{route('maintenance.breakdown.index')}}" class="btn btn-sm default">Cancel</a> <br><br>
                                                 </div>
                                             </div>
@@ -80,15 +86,24 @@
                                                         <form action="{{route('maintenance.breakdown.destroy', ['breakdown' => $item->id])}}" method="POST">
                                                             @method('delete')
                                                             @csrf
+                                                            @if($edit)
                                                             <a href="{{ route('maintenance.breakdown.edit', ['breakdown' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                                                            @else
+                                                            <button disabled href="{{ route('maintenance.breakdown.edit', ['breakdown' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></button>
+                                                            @endif
+                                                            @if($delete)
                                                             <button type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>
+                                                            @else
+                                                            <button disabled type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>
+                                                            @endif
                                                         </form>
                                                     </td>
                                                 </tr>
                                             @endforeach
                                         @endisset
                                         </tbody>
-                                    </table>
+                                    </table>ontrol" required maxlength="50">
+                                            </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="portlet_tab_2">
@@ -100,8 +115,7 @@
                                         <div class="col-md-12 margin-bottom-10">
                                             <label class="control-label col-md-3">Name</label>
                                             <div class="col-md-9">
-                                                <input type="text" size="16" name="name" id="name" class="form-control" required maxlength="50">
-                                            </div>
+                                                <input type="text" size="16" name="name" id="name" class="form-c
                                         </div>
                                     </div>										
                                     <div class="form-actions" style="margin-left:20px;">

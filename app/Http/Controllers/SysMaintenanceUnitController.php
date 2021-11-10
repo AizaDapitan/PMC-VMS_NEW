@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use DB;
+use App\Services\RoleRightService;
 
 class SysMaintenanceUnitController extends Controller
 {
@@ -17,26 +18,48 @@ class SysMaintenanceUnitController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index(Request $request)
     {
-        if($request->plateno!=null || $request->plateno!='') {                
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
+        if ($request->plateno != null || $request->plateno != '') {
             if (Auth::user()->dept == 'TECHNICAL SERVICES GROUP' || Auth::user()->dept == 'CIVIL WORKS') {
-                $units = Unit::where('isECS',null)->where('plateno',$request->plateno)->get();
+                $units = Unit::where('isECS', null)->where('plateno', $request->plateno)->get();
             } else {
-                $units = Unit::where('plateno',$request->plateno)->get();
-            }            
+                $units = Unit::where('plateno', $request->plateno)->get();
+            }
         } else {
             if (Auth::user()->dept == 'TECHNICAL SERVICES GROUP' || Auth::user()->dept == 'CIVIL WORKS') {
-                $units = Unit::where('isECS',null)->get();
+                $units = Unit::where('isECS', null)->get();
             } else {
                 $units = Unit::get();
-            }       
+            }
         }
         $localDept = Department::get();
         $hrisDept = HRISAgusanDepartment::select(DB::raw('DISTINCT DeptDesc as name'))->orderBy('DeptDesc', 'asc')->get();
         $departments = array_merge($localDept->toArray(), $hrisDept->toArray());
         $dept = $departments;
-        return view('admin.maintenance.unit',compact('units','dept'));
+        return view('admin.maintenance.unit', compact(
+            'units',
+            'dept',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -58,7 +81,7 @@ class SysMaintenanceUnitController extends Controller
     public function store(Request $request)
     {
         $isECS = '';
-        if  (($request->department == 'CIVIL WORKS') ||
+        if (($request->department == 'CIVIL WORKS') ||
             ($request->department == 'MINE CIVIL WORKS') ||
             ($request->department == 'CIVIL WORKS & ROAD MAINTENANCE') ||
             ($request->department == 'ETS-CIVIL WORKS MAINTENANCE') ||
@@ -66,7 +89,7 @@ class SysMaintenanceUnitController extends Controller
             ($request->department == 'ECS Civil Works Office') ||
             ($request->department == "ECS Division Manager'\s Office") ||
             ($request->department == 'ECS Electrical Services Office') ||
-            ($request->department == 'ECS Motor Pool Office') || 
+            ($request->department == 'ECS Motor Pool Office') ||
             ($request->departmentmanual == 'CIVIL WORKS') ||
             ($request->departmentmanual == 'MINE CIVIL WORKS') ||
             ($request->departmentmanual == 'CIVIL WORKS & ROAD MAINTENANCE') ||
@@ -75,31 +98,31 @@ class SysMaintenanceUnitController extends Controller
             ($request->departmentmanual == 'ECS Civil Works Office') ||
             ($request->departmentmanual == "ECS Division Manager'\s Office") ||
             ($request->departmentmanual == 'ECS Electrical Services Office') ||
-            ($request->departmentmanual == 'ECS Motor Pool Office')) {
+            ($request->departmentmanual == 'ECS Motor Pool Office')
+        ) {
 
             $isECS = null;
-
         } else {
             $isECS = 0;
         }
-                
+
         Unit::create([
-            'name'=> $request->get('brand'),
-            'type'=> $request->get('unit_type'),
+            'name' => $request->get('brand'),
+            'type' => $request->get('unit_type'),
             'required_availability_hours' =>  $request->get('required_availability_hours'),
-            'active'=> 1,
-            'dept'=> $request->get('department') ? $request->get('department') : $request->get('departmentmanual'),
+            'active' => 1,
+            'dept' => $request->get('department') ? $request->get('department') : $request->get('departmentmanual'),
             'isECS' => $isECS,
-            'model'=> $request->get('model'),
-            'plateno'=> $request->get('plate_number'),
-            'chassisno'=> $request->get('chassis_serial'),
-            'engineno'=> $request->get('engine_serial'),
-            'color'=> $request->get('color'),
-            'vehicle_code'=> $request->get('vehicle_code_new'),
-            'is_dispose'=> 0,
+            'model' => $request->get('model'),
+            'plateno' => $request->get('plate_number'),
+            'chassisno' => $request->get('chassis_serial'),
+            'engineno' => $request->get('engine_serial'),
+            'color' => $request->get('color'),
+            'vehicle_code' => $request->get('vehicle_code_new'),
+            'is_dispose' => 0,
         ]);
 
-        Session::flash('success'," Unit Created Successfully...");
+        Session::flash('success', " Unit Created Successfully...");
         return redirect()->back();
     }
 
@@ -122,13 +145,30 @@ class SysMaintenanceUnitController extends Controller
      */
     public function edit($id)
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+        
         $item = Unit::find($id);
         $units = Unit::all();
         $localDept = Department::get();
         $hrisDept = HRISAgusanDepartment::select(DB::raw('DISTINCT DeptDesc as name'))->orderBy('DeptDesc', 'asc')->get();
         $departments = array_merge($localDept->toArray(), $hrisDept->toArray());
-        $dept = $departments;        
-        return  view('admin.maintenance.unit',compact('item','units','dept'));
+        $dept = $departments;
+        return  view('admin.maintenance.unit', compact(
+            'item',
+            'units',
+            'dept',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -158,7 +198,6 @@ class SysMaintenanceUnitController extends Controller
         //return redirect()->back();
 
         return redirect()->route('maintenance.unit.index')->with('success', 'Unit has been updated!!');
-        
     }
 
     /**
@@ -170,9 +209,8 @@ class SysMaintenanceUnitController extends Controller
     public function destroy($id)
     {
         $unit = Unit::find($id);
-      
-        if($unit)
-        {
+
+        if ($unit) {
             Unit::destroy($id);
         }
 
@@ -180,7 +218,7 @@ class SysMaintenanceUnitController extends Controller
     }
 
     public function disposeVehicle($id)
-    {        
+    {
         $deactivate = Unit::find($id);
         $deactivate->update(['is_dispose' => 1]);
 
@@ -189,10 +227,9 @@ class SysMaintenanceUnitController extends Controller
 
     public function undisposeVehicle($id)
     {
-        $activate = Unit::find($id);        
+        $activate = Unit::find($id);
         $activate->update(['is_dispose' => 0]);
 
         return redirect()->back();
     }
-   
 }

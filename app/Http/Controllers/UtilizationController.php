@@ -4,16 +4,41 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\RoleRightService;
 
 class UtilizationController extends Controller
 {
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function dashboard()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Utilization Dashboard");
+
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
         $date = date('y-m-d');
         $start = date("Y-m-01", strtotime($date));
         $end = date("Y-m-t", strtotime($date));
 
-        return view('admin.utilization.index', compact('start','end'));
+        return view('admin.utilization.index', compact(
+            'start',
+            'end',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     public function frequentDestination()
@@ -34,21 +59,20 @@ class UtilizationController extends Controller
         $result = DB::select($query);
         $result = (array) $result;
 
-        foreach($result as $value) {
+        foreach ($result as $value) {
             array_push($jsondata["data"], array(
                 "label" => strtoupper($value->dest),
-                "value" => str_replace('-', ' ',$value->total)
+                "value" => str_replace('-', ' ', $value->total)
             ));
         }
 
-        if( empty($result))
-        {
+        if (empty($result)) {
             array_push($jsondata["data"], array(
                 "label" => 0,
                 "value" => 0
             ));
         }
-    
+
         return view('admin.utilization.frequent-destination', compact('jsondata'));
     }
 
@@ -65,26 +89,25 @@ class UtilizationController extends Controller
         );
 
         $jsondata["data"] = array();
-        
+
         $query = "SELECT type, odometer_start, odometer_end, odometer_end - odometer_start AS sub FROM dispatch ORDER BY sub DESC";
         $result = DB::select($query);
         $result = (array) $result;
 
-        foreach($result as $value) {
+        foreach ($result as $value) {
             array_push($jsondata["data"], array(
                 "label" => strtoupper($value->type),
-                "value" => str_replace('-', ' ',$value->sub)
+                "value" => str_replace('-', ' ', $value->sub)
             ));
         }
 
-        if( empty($result))
-        {
+        if (empty($result)) {
             array_push($jsondata["data"], array(
                 "label" => 0,
                 "value" => 0
             ));
         }
-        
+
         return view('admin.utilization.vehicle-distance', compact('jsondata'));
     }
 
@@ -106,21 +129,20 @@ class UtilizationController extends Controller
         $result = DB::select($query);
         $result = (array) $result;
 
-        foreach($result as $value) {
+        foreach ($result as $value) {
             array_push($jsondata["data"], array(
                 "label" => strtoupper($value->deptId),
                 "value" => $value->total
             ));
         }
 
-        if( empty($result))
-        {
+        if (empty($result)) {
             array_push($jsondata["data"], array(
                 "label" => 0,
                 "value" => 0
             ));
         }
-       
+
         return view('admin.utilization.dispatches-per-department', compact('jsondata'));
     }
 
@@ -142,21 +164,20 @@ class UtilizationController extends Controller
         $result = DB::select($query);
         $result = (array) $result;
 
-        foreach($result as $value) {
+        foreach ($result as $value) {
             array_push($jsondata["data"], array(
                 "label" => strtoupper($value->type),
                 "value" => $value->total
             ));
         }
 
-        if( empty($result))
-        {
+        if (empty($result)) {
             array_push($jsondata["data"], array(
                 "label" => 0,
                 "value" => 0
             ));
         }
-       
+
         return view('admin.utilization.dispatches-per-department', compact('jsondata'));
     }
 }

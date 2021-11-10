@@ -21,7 +21,7 @@ class VehicleRequestsExport implements FromQuery, WithHeadings, WithMapping
     //     return VehicleRequest::all();
     // }
     public function query()
-    {
+    {    
         return VehicleRequest::query()
             ->with([
                 'tripTicket',

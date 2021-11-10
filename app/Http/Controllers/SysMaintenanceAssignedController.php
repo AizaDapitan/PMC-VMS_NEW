@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assigned;
 use Illuminate\Http\Request;
+use App\Services\RoleRightService;
 
 class SysMaintenanceAssignedController extends Controller
 {
@@ -12,10 +13,31 @@ class SysMaintenanceAssignedController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
         $assigned = Assigned::all();
-        return view('admin.maintenance.assigned',compact('assigned'));
+        return view('admin.maintenance.assigned', compact(
+            'assigned',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -37,8 +59,8 @@ class SysMaintenanceAssignedController extends Controller
     public function store(Request $request)
     {
         Assigned::create([
-            'name'=> $request->get('name'),
-            'active'=> 1
+            'name' => $request->get('name'),
+            'active' => 1
         ]);
 
         return redirect()->back();
@@ -63,10 +85,25 @@ class SysMaintenanceAssignedController extends Controller
      */
     public function edit($id)
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
         $item = Assigned::find($id);
         $assigned = Assigned::all();
-        
-        return  view('admin.maintenance.assigned',compact('item','assigned'));
+
+        return  view('admin.maintenance.assigned', compact(
+            'item',
+            'assigned',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -94,9 +131,8 @@ class SysMaintenanceAssignedController extends Controller
     public function destroy($id)
     {
         $assigned = Assigned::find($id);
-      
-        if($assigned)
-        {
+
+        if ($assigned) {
             Assigned::destroy($id);
         }
 

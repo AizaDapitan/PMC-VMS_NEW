@@ -118,9 +118,9 @@ class DispatchController extends Controller
     public function vehiclesTotalDistance(Request $request)
     {
         $rolesPermissions = $this->roleRightService->hasPermissions("Top Vehicles by Distance Travelled");
-        if (!$rolesPermissions['view']) {
-            abort(401);
-        }
+		if (!$rolesPermissions['view']) {
+		    abort(401);
+		}
         $reports = [];
         $dispatches = null;
 
@@ -333,13 +333,17 @@ class DispatchController extends Controller
         return response()->json($reports);
     }
     public function weekly(Request $request, $week = null)
+<<<<<<< HEAD
     {
+=======
+    {  
+>>>>>>> 285e95dc48b6231dcf9a293d0df6f97e85940c43
         // dd($request);
-
-        $rolesPermissions = $this->roleRightService->hasPermissions("Weekly");
-        if (!$rolesPermissions['view']) {
-            abort(401);
-        }
+        
+		$rolesPermissions = $this->roleRightService->hasPermissions("Weekly");
+		if (!$rolesPermissions['view']) {
+		    abort(401);
+		}
         $unit = Unit::all();
         $startDate = '2021-01-01';
         $endDate = strtotime('2021-12-31');
@@ -350,36 +354,43 @@ class DispatchController extends Controller
             $weeks .= '<option value="' . $n . '|' . date('Y-m-d', $i) . '|' . date('Y-m-d', strtotime('+6 days', $i)) . '">Week ' . $n . ' (' . date('Y-m-d', $i) . ' to ' . date('Y-m-d', strtotime('+6 days', $i)) . ')</option>';
         }
         $isMotor = true;
-        if ($request->from !== null && $request->to !== null) { {
-                if ($request->unit !== null) {
+<<<<<<< HEAD
+        if ($request->from !== null && $request->to !== null) {
 
-                    if ($request->unit != 'motor') {
-                        $isMotor = false;
-                        $v_id = explode('|', $request->unit);
+            if ($request->unit !== null) {
+=======
+        if($request->from!==null && $request->to!==null) 
+        {  
+            if($request->unit!==null) {
+>>>>>>> 285e95dc48b6231dcf9a293d0df6f97e85940c43
 
-                        if ($v_id[1] == null || $v_id[1] == '') {
-                            $v_id[1] = 0;
-                        }
+                if ($request->unit != 'motor') {
+                    $isMotor = false;
+                    $v_id = explode('|', $request->unit);
+
+                    if ($v_id[1] == null || $v_id[1] == '') {
+                        $v_id[1] = 0;
                     }
-                    // $result = "
-                    //     select
-                    //         d.tripTicket,
-                    //         d.unitId,                    
-                    //         d.type,
-                    //         d.purpose,
-                    //         d.Status,
-                    //         r.refcode,
-                    //         r.date_needed,
-                    //         u.name,
-                    //         u.plateno,
-                    //         u.crossref_vid,
-                    //         d.dateStart from
-                    //         dispatch d left join vehicle_request as r on r.id=d.request_id
-                    //         left join unit u on u.id=d.unitId
-                    //     where 
-                    //         d.dateStart>='".$request->from." 00:00:01' and d.dateStart<='".$request->to." 23:59:59' and u.id=".$request->unit; 
-                    if ($request->unit != 'motor') {
-                        $result = "
+                }
+                // $result = "
+                //     select
+                //         d.tripTicket,
+                //         d.unitId,                    
+                //         d.type,
+                //         d.purpose,
+                //         d.Status,
+                //         r.refcode,
+                //         r.date_needed,
+                //         u.name,
+                //         u.plateno,
+                //         u.crossref_vid,
+                //         d.dateStart from
+                //         dispatch d left join vehicle_request as r on r.id=d.request_id
+                //         left join unit u on u.id=d.unitId
+                //     where 
+                //         d.dateStart>='".$request->from." 00:00:01' and d.dateStart<='".$request->to." 23:59:59' and u.id=".$request->unit; 
+                if ($request->unit != 'motor') {
+                    $result = "
                     select
                         d.tripTicket,
                         d.unitId,                    
@@ -396,72 +407,82 @@ class DispatchController extends Controller
                         left join unit u on u.id=d.unitId
                     where 
                         d.dateStart>='" . $request->from . " 00:00:01' and d.dateStart<='" . $request->to . " 23:59:59' and (u.id=" . $v_id[0] . " or u.id=" . $v_id[1] . ")";
-                    } else {
-                        //      $result = "
-                        // select
-                        //     d.tripTicket,
-                        //     d.unitId,                    
-                        //     d.type,
-                        //     d.purpose,
-                        //     d.Status,
-                        //     r.refcode,
-                        //     r.date_needed,
-                        //     u.name,
-                        //     u.plateno,
-                        //     u.crossref_vid,
-                        //     u.type,
-                        //     d.dateStart from
-                        //     dispatch d left join vehicle_request as r on r.id=d.request_id
-                        //     left join unit u on u.id=d.unitId
-                        // where 
-                        //     d.dateStart>='".$request->from." 00:00:01' and d.dateStart<='".$request->to." 23:59:59' and u.type='".$request->unit."'"; 
-                        $result = "select * from unit where type like '%" . $request->unit . "%'";
-                    }
-
-
-                    // $fresult= "select d.RQ, d.created_at, d.tripTicket, d.type, d.fuel_requested_qty, d.fuel_added_qty, d.purpose, d.unitId from dispatch d left join vehicle_request as r on r.id=d.request_id where d.dateStart>='".$request->from." 00:00:00' and d.dateStart<='".$request->to." 23:59:59' and d.unitId=".$request->unit;
-
-                    // $fresult = "select * from issuance_request_tbl where processed_at>='".$request->from." 00:00:01' and processed_at<='".$request->to." 23:59:59' and vehicle_id=".$request->unit;   
-
-                    // $frs = DB::select($fresult);            
-                    // $fresult = FMSIssuanceRequest::where('processed_at','>=',$request->from.' 00:00:01')->where('processed_at','<=',$request->to.' 23:59:59')->where('vehicle_id','=',$v_id[0])->SWhere('vehicle_id','=',$v_id[1])->get();  
-
-                    if ($request->unit != 'motor') {
-
-                        $c = $v_id[0];
-                        $d = $v_id[1];
-
-                        $rs = DB::select($result);
-
-                        $fresult = FMSIssuanceRequest::where('created_at', '>=', $request->from . ' 00:00:01')->where('created_at', '<=', $request->to . ' 23:59:59')->where(function ($query) use ($c, $d) {
-                            $query->where('vehicle_id', '=', $c)
-                                ->orWhere('vehicle_id', '=', $d);
-                        })->get();
-                    } else {
-
-                        $rs = DB::select($result);
-
-                        // dd(collect($rs)->pluck('id'));
-
-                        // dd($rs->pluck('id'));
-
-                        $data = array();
-
-                        foreach ($rs as $r) {
-                            $data[] = $r->id;
-                        }
-
-                        // dd($data);     
-
-                        $fresult = FMSIssuanceRequest::whereIn('vehicle_id', $data)->where('created_at', '>=', $request->from . ' 00:00:01')->where('created_at', '<=', $request->to . ' 23:59:59')->get();
-                    }
-
-                    $weeknum = $request->weeknum;
-
-                    $saveLogs = $this->reportService->create("Weekly", $request);
-                    return view('admin.requests.reports.weekly-report', compact('weeks', 'unit', 'rs', 'weeknum', 'request', 'fresult', 'isMotor'));
                 } else {
-                    $result = "
+                    //      $result = "
+                    // select
+                    //     d.tripTicket,
+                    //     d.unitId,                    
+                    //     d.type,
+                    //     d.purpose,
+                    //     d.Status,
+                    //     r.refcode,
+                    //     r.date_needed,
+                    //     u.name,
+                    //     u.plateno,
+                    //     u.crossref_vid,
+                    //     u.type,
+                    //     d.dateStart from
+                    //     dispatch d left join vehicle_request as r on r.id=d.request_id
+                    //     left join unit u on u.id=d.unitId
+                    // where 
+                    //     d.dateStart>='".$request->from." 00:00:01' and d.dateStart<='".$request->to." 23:59:59' and u.type='".$request->unit."'"; 
+                    $result = "select * from unit where type like '%" . $request->unit . "%'";
+                }
+
+
+                // $fresult= "select d.RQ, d.created_at, d.tripTicket, d.type, d.fuel_requested_qty, d.fuel_added_qty, d.purpose, d.unitId from dispatch d left join vehicle_request as r on r.id=d.request_id where d.dateStart>='".$request->from." 00:00:00' and d.dateStart<='".$request->to." 23:59:59' and d.unitId=".$request->unit;
+
+                // $fresult = "select * from issuance_request_tbl where processed_at>='".$request->from." 00:00:01' and processed_at<='".$request->to." 23:59:59' and vehicle_id=".$request->unit;   
+
+                // $frs = DB::select($fresult);            
+                // $fresult = FMSIssuanceRequest::where('processed_at','>=',$request->from.' 00:00:01')->where('processed_at','<=',$request->to.' 23:59:59')->where('vehicle_id','=',$v_id[0])->SWhere('vehicle_id','=',$v_id[1])->get();  
+
+                if ($request->unit != 'motor') {
+
+                    $c = $v_id[0];
+                    $d = $v_id[1];
+
+                    $rs = DB::select($result);
+
+                    $fresult = FMSIssuanceRequest::where('created_at', '>=', $request->from . ' 00:00:01')->where('created_at', '<=', $request->to . ' 23:59:59')->where(function ($query) use ($c, $d) {
+                        $query->where('vehicle_id', '=', $c)
+                            ->orWhere('vehicle_id', '=', $d);
+                    })->get();
+                } else {
+
+                    $rs = DB::select($result);
+
+                    // dd(collect($rs)->pluck('id'));
+
+                    // dd($rs->pluck('id'));
+
+                    $data = array();
+
+                    foreach ($rs as $r) {
+                        $data[] = $r->id;
+                    }
+
+                    // dd($data);     
+
+                    $fresult = FMSIssuanceRequest::whereIn('vehicle_id', $data)->where('created_at', '>=', $request->from . ' 00:00:01')->where('created_at', '<=', $request->to . ' 23:59:59')->get();
+                }
+
+                $weeknum = $request->weeknum;
+<<<<<<< HEAD
+
+                $saveLogs = $this->reportService->create("Weekly", $request);
+                return view('admin.requests.reports.weekly-report', compact('weeks', 'unit', 'rs', 'weeknum', 'request', 'fresult', 'isMotor'));
+            } else {
+                $result = "
+=======
+                
+		$saveLogs = $this->reportService->create("Weekly", $request);
+                return view('admin.requests.reports.weekly-report',compact('weeks','unit','rs','weeknum','request','fresult','isMotor'));
+            } 
+            else
+            {
+                 $result = "
+>>>>>>> 285e95dc48b6231dcf9a293d0df6f97e85940c43
                     select
                         d.tripTicket,
                         d.unitId,
@@ -477,18 +498,18 @@ class DispatchController extends Controller
                         left join unit u on u.id=d.unitId
                     where 
                         d.dateStart>='" . $request->from . " 00:00:01' and d.dateStart<='" . $request->to . " 23:59:59'";
-                    $rs = DB::select($result);
+                $rs = DB::select($result);
 
-                    // $fresult= "select d.RQ, d.created_at, d.tripTicket, d.type, d.fuel_requested_qty, d.fuel_added_qty, d.purpose, d.unitId from dispatch d left join vehicle_request as r on r.id=d.request_id where d.dateStart>='".$request->from." 00:00:01' and d.dateStart<='".$request->to." 23:59:59'";
+                // $fresult= "select d.RQ, d.created_at, d.tripTicket, d.type, d.fuel_requested_qty, d.fuel_added_qty, d.purpose, d.unitId from dispatch d left join vehicle_request as r on r.id=d.request_id where d.dateStart>='".$request->from." 00:00:01' and d.dateStart<='".$request->to." 23:59:59'";
 
-                    // $frs = DB::select($fresult);
+                // $frs = DB::select($fresult);
 
-                    $fresult = FMSIssuanceRequest::where('created_at', '>=', $request->from . ' 00:00:01')->where('created_at', '<=', $request->to . ' 23:59:59')->get();
+                $fresult = FMSIssuanceRequest::where('created_at', '>=', $request->from . ' 00:00:01')->where('created_at', '<=', $request->to . ' 23:59:59')->get();
 
-                    $weeknum = $request->weeknum;
-                    $saveLogs = $this->reportService->create("Weekly", $request);
-                    return view('admin.requests.reports.weekly-report', compact('weeks', 'unit', 'rs', 'weeknum', 'request', 'fresult', 'isMotor'));
-                }
+                $weeknum = $request->weeknum;
+                $saveLogs = $this->reportService->create("Weekly", $request);
+<<<<<<< HEAD
+                return view('admin.requests.reports.weekly-report', compact('weeks', 'unit', 'rs', 'weeknum', 'request', 'fresult'));
             }
         } else {
             return view('admin.requests.reports.weekly-report', compact('weeks', 'unit', 'request', 'isMotor'));
@@ -497,12 +518,46 @@ class DispatchController extends Controller
     public function daily($dyt = null, Request $request)
     {
         $rolesPermissions = $this->roleRightService->hasPermissions("Daily");
-        if (!$rolesPermissions['view']) {
-            abort(401);
-        }
+		if (!$rolesPermissions['view']) {
+		    abort(401);
+		}
         if (!$dyt)
             $dyt = date('Y-m-d');
         $result = "
+        select
+        d.tripTicket,
+        d.type,
+        d.purpose,
+        d.Status,
+        r.refcode,
+        r.date_needed,
+        u.name,
+        u.plateno,
+        d.dateStart from
+        dispatch d left join vehicle_request as r on r.id=d.request_id
+        left join unit u on u.id=d.unitId
+        where
+        d.dateStart>='" . $dyt . " 00:00:00' and d.dateStart<='" . $dyt . " 23:59:59'";
+        // dd($result);
+        $rs = DB::select($result);
+        $saveLogs = $this->reportService->create("Daily", $request);
+        return view('admin.requests.reports.daily-report', compact('dyt', 'rs'));
+    }
+}
+=======
+                return view('admin.requests.reports.weekly-report',compact('weeks','unit','rs','weeknum','request','fresult','isMotor'));
+            }
+        } 
+        else 
+        {
+            return view('admin.requests.reports.weekly-report',compact('weeks','unit','request','isMotor'));
+        }
+    }
+        public function daily($dyt = null, Request $request)
+        {
+            if(!$dyt)
+            $dyt = date('Y-m-d');
+            $result = "
             select
             d.tripTicket,
             d.type,
@@ -516,10 +571,11 @@ class DispatchController extends Controller
             dispatch d left join vehicle_request as r on r.id=d.request_id
             left join unit u on u.id=d.unitId
             where
-        d.dateStart>='" . $dyt . " 00:00:00' and d.dateStart<='" . $dyt . " 23:59:59'";
-        // dd($result);
-        $rs = DB::select($result);
-        $saveLogs = $this->reportService->create("Daily", $request);
-        return view('admin.requests.reports.daily-report', compact('dyt', 'rs'));
-    }
+            d.dateStart>='".$dyt." 00:00:00' and d.dateStart<='".$dyt." 23:59:59'";
+            // dd($result);
+            $rs = DB::select($result);
+            $saveLogs = $this->reportService->create("Daily", $request);
+            return view('admin.requests.reports.daily-report',compact('dyt','rs'));
+        }
 }
+>>>>>>> 285e95dc48b6231dcf9a293d0df6f97e85940c43

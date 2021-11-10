@@ -54,7 +54,11 @@
                     </div>
 
                     <div class="portlet-title">
+                        @if($create)
                         <a class="btn btn-sm blue pull-left" href="{{route('maintenance.application.index')}}">Create a Scheduled Shutdown </a>
+                        @else
+                        <button disabled class="btn btn-sm blue pull-left" href="{{route('maintenance.application.index')}}">Create a Scheduled Shutdown </button>
+                        @endif
                     </div>
 
 
@@ -114,13 +118,25 @@
                                     <div class="row">
 
                                         @if(Request::get('id'))
+                                            @if($edit)
                                             <button class="btn purple pull-right" type="submit" name="e_application">
                                                 <span class="glyphicon glyphicon-edit"></span> Update
                                             </button>
+                                            @else
+                                            <button disabled class="btn purple pull-right" type="submit" name="e_application">
+                                                <span class="glyphicon glyphicon-edit"></span> Update
+                                            </button>
+                                            @endif
                                         @else
+                                            @if($create)
                                             <button class="btn blue pull-right" type="submit" name="a_application">
                                                 <span class="glyphicon glyphicon-send"></span> Submit
                                             </button>
+                                            @else
+                                            <button disabled class="btn blue pull-right" type="submit" name="a_application">
+                                                <span class="glyphicon glyphicon-send"></span> Submit
+                                            </button>
+                                            @endif
                                         @endif                                        
                 
                                     </div>
@@ -194,7 +210,7 @@
                                 <div class="tools"> </div>
                             </div>
                             <div class="portlet-body">
-                                <table class="table table-striped table-bordered table-hover" id="sample_2">
+                                <table class="table table-striped table-bordered table-hover" id="sample_101">
                                     <thead>
                                         <tr>
                                             <th>Scheduled Date</th>

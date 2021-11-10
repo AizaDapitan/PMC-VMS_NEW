@@ -248,7 +248,11 @@
 	</div>
 	<div class="modal-footer" id="footermode">
 		<button type="button" class="btn default" onclick="window.close();">Cancel</button>
+		@if($create)
 		<input type="submit" class="btn blue" value="Add">
+		@else
+		<input disabled type="submit" class="btn blue" value="Add">
+		@endif
 	</div>
 </form>
 @endsection

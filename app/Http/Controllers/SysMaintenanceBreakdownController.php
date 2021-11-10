@@ -14,8 +14,23 @@ class SysMaintenanceBreakdownController extends Controller
      */
     public function index()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
         $breakdown = RepairBreakdown::all();
-        return view('admin.maintenance.breakdown',compact('breakdown'));
+        return view('admin.maintenance.breakdown', compact(
+            'breakdown',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -37,8 +52,8 @@ class SysMaintenanceBreakdownController extends Controller
     public function store(Request $request)
     {
         RepairBreakdown::create([
-            'name'=> $request->get('name'),
-            'active'=> 1
+            'name' => $request->get('name'),
+            'active' => 1
         ]);
 
         return redirect()->back();
@@ -63,10 +78,26 @@ class SysMaintenanceBreakdownController extends Controller
      */
     public function edit($id)
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
         $item = RepairBreakdown::find($id);
         $breakdown = RepairBreakdown::all();
-        
-        return  view('admin.maintenance.breakdown',compact('item','breakdown'));
+
+        return  view('admin.maintenance.breakdown', compact(
+            'item',
+            'breakdown',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -94,9 +125,8 @@ class SysMaintenanceBreakdownController extends Controller
     public function destroy($id)
     {
         $breakdown = RepairBreakdown::find($id);
-      
-        if($breakdown)
-        {
+
+        if ($breakdown) {
             RepairBreakdown::destroy($id);
         }
 

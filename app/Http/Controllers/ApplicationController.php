@@ -34,19 +34,16 @@ class ApplicationController extends Controller
     public function index(Request $request)
     {
         
-        //$rolesPermissions = $this->roleRightService->hasPermissions("Application Maintenance");
+        $rolesPermissions = $this->roleRightService->hasPermissions("Application Maintenance");
 
-        //if (!$rolesPermissions['view']) {
-            //abort(401);
-        //}
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
 
-        //$create = $rolesPermissions['create'];
-        //$edit = $rolesPermissions['edit'];
-        //$delete = $rolesPermissions['delete'];
-
-        $create = true;
-        $edit = true;
-        $delete = true;        
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+      
 
         $applications = $request->has('id') ? Application::find($request->input('id')) : null;
         $applicationList = Application::orderBy('scheduled_date','desc')->get();

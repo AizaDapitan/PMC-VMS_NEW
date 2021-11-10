@@ -33,13 +33,13 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/e-search-hris-department', 'SearchController@e_search_department')->name('e_search.e_hris.e_department');
 
-    Route::get('/change-password', function () {
+    // Route::get('/change-password', function () {
 
-        $id = \Auth::user()->id;
+    //     $id = \Auth::user()->id;
 
-        return view('auth.passwords.change', compact('id'));
-    })->name('change-pass');
-
+    //     return view('auth.passwords.change', compact('id'));
+    // })->name('change-pass');
+    Route::get('/change-password', 'LoginUserController@changePassword')->name('change-pass');
     Route::patch('/change-password', 'LoginUserController@updatePassword')->name('updatePassword');
 
     //Put all forms here  

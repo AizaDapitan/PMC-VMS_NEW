@@ -196,7 +196,11 @@
 				</div>
 				<div class="modal-footer" id="footermode">
 					<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+					@if($create)
 					<input type="submit" class="btn blue" value="Save" onclick="validate_dept();">
+					@else
+					<input disabled type="submit" class="btn blue" value="Save" onclick="validate_dept();">
+					@endif
 				</div>
 			</form>
 			</div>
@@ -363,7 +367,11 @@
 						</div>
 						<div>
 							<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+							@if($create)
 							<input type="submit" class="btn blue" value="Save">
+							@else
+							<input disabled type="submit" class="btn blue" value="Save">
+							@endif
 						</div>
 						</div>
 						
@@ -407,9 +415,15 @@
             </div>
             <div class="col-md-4 text-right">
                 <div>
-                <a class="btn blue btn-sm" href="#" style="margin-left: 10px;" onclick="$('#newrequest').modal('show');">
-                    <span class="fa fa-plus"></span> Add New
-                </a>
+					@if($create)
+						<a class="btn blue btn-sm" href="#" style="margin-left: 10px;" onclick="$('#newrequest').modal('show');">
+							<span class="fa fa-plus"></span> Add New
+						</a>
+					@else
+						<button disabled class="btn blue btn-sm" href="#" style="margin-left: 10px;" onclick="$('#newrequest').modal('show');">
+							<span class="fa fa-plus"></span> Add New
+						</button>
+					@endif
                 <a class="btn green btn-sm" href="{{ route('vehicle.request.export') }}" style="margin-left: 10px;">
                     <span class="fa fa-download"></span> Download List
                 </a>                       
@@ -488,15 +502,21 @@
 									red;
 								@endif">
 								{{ $request->status }}
-								
+							@if($edit)
 							<a style="float: right;" href="javascript::void(0)" onclick="edit_status({{ $request->id }},'{{ $request->status }}','{{ $request->refcode }}');" title="Change Status">
 									<span class=@if($request->status=='Cancelled' || $request->status=='Closed') @else 'fa fa-pencil' @endif></span>
 							</a>
+							@else
+							<button disabled style="float: right;" href="javascript::void(0)" onclick="edit_status({{ $request->id }},'{{ $request->status }}','{{ $request->refcode }}');" title="Change Status">
+									<span class=@if($request->status=='Cancelled' || $request->status=='Closed') @else 'fa fa-pencil' @endif></span>
+							</button>
+							@endif
 							</td>
 							<td style="width:140px;" title="last changed by {{ $request->lastStatusChangedBy }}">{{ date('Y-m-d h:i A',strtotime($request->lastStatusChanged)) }}</td>
 							<td>
 								@if(isset($request->tripTicket))
 									@foreach($request->tripTicket as $ticket)
+									@if($edit)
 										@if($ticket->Status == 'Completed')
 											<a target="_blank" href="{{ route('vehicle.request.trip_completed', ['id' => $ticket->tripTicket]) }}" 
 												class="btn btn-xs 
@@ -549,6 +569,12 @@
 														<div>Date Out: {{ $ticket->dateStart }}</div>
 														<div>Driver: {{ isset($ticket->tripTicket) ? isset($ticket->tripTicket->driver) ? $ticket->tripTicket->driver->driver_name: '' : ''}}</div>">{{ $ticket->tripTicket }}
 											</a>&nbsp;
+											
+											@endif
+											@else
+											<button disabled class="btn btn-xs" >
+												{{ $ticket->tripTicket }}
+											</button>&nbsp;
 										@endif
 									@endforeach
 								@endif
@@ -557,17 +583,36 @@
 								<input type="hidden" name="isClosable{{$request->id}}>" id="isClosable{{ $request->id }}" value="">
 								@if($request->isNotEditable == 0 || $request->isNotEditable == null)
 									@if($request->status != 'Cancelled')
+										@if($edit)
 										<a href="#" class="btn yellow btn-xs" title="Update Request" onclick="editRequest('{{ $request->id }}');"><i class="fa fa-edit"></i></a>
+										@else
+										<button disabled href="#" class="btn yellow btn-xs" title="Update Request" onclick="editRequest('{{ $request->id }}');"><i class="fa fa-edit"></i></button>
+										@endif
+										@if($delete)
 										<a href="#" class="btn red btn-xs" title="Cancel Request" onclick="cancel('{{ $request->id }}');"><i class="fa fa-minus-circle"></i></a>
+										@else
+										<button disabled href="#" class="btn red btn-xs" title="Cancel Request" onclick="cancel('{{ $request->id }}');"><i class="fa fa-minus-circle"></i></button>
+										@endif
 									@endif
 								@endif
+								@if($create)
 								<a style="display:{{($request->status == 'Cancelled' || $request->status == 'Closed') ? 'none' : ''}}" href="{{ route('vehicle.request.dispatch', $request->id) }}" class="btn green btn-xs" title="Add New Trip Ticket">
 									<i class="fa fa-plus-square"></i>
 								</a>
-
+								@else
+								<button disabled style="display:{{($request->status == 'Cancelled' || $request->status == 'Closed') ? 'none' : ''}}" href="{{ route('vehicle.request.dispatch', $request->id) }}" class="btn green btn-xs" title="Add New Trip Ticket">
+									<i class="fa fa-plus-square"></i>
+								</button>
+								@endif
+								@if($edit)
 								<a href="#" class="btn purple btn-xs dropdown-quick-sidebar-toggler" title="Send Message" id="{{ $request->id }}">
 									<i class="fa fa-comments-o"></i>
 								</a>
+								@else
+								<button disabled href="#" class="btn purple btn-xs dropdown-quick-sidebar-toggler" title="Send Message" id="{{ $request->id }}">
+									<i class="fa fa-comments-o"></i>
+								</button>
+								@endif
 							</td>
 						</tr>
 					@endforeach
@@ -811,7 +856,7 @@
 	function costcode_check(x,y){
 		$.ajax({
          method: "GET",
-         url: "costcodes.php?code="+x
+         url: "{{env('APP_URL')}}/costcodes.php?code="+x
       })
       .done(function( d ) {      
          if(d == 0){

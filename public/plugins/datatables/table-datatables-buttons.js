@@ -1,7 +1,7 @@
 var TableDatatablesButtons = function () {
 
     var initTable1 = function () {
-        var table = $('#sample_1');
+        var table = $('#sample_101');
 
         var oTable = table.dataTable({
 

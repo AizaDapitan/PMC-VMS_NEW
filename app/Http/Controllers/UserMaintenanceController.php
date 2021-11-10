@@ -22,6 +22,18 @@ class UserMaintenanceController extends Controller
     }
     public function index(Request $request)
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Users Maintenance");
+
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
         $userList = User::all()->where('isdepartment', 0);
         $name = $request->has('name') ? $request->input('name') : null;
 
@@ -85,12 +97,25 @@ class UserMaintenanceController extends Controller
         }
 
         $roles = Role::where('active', '1')->get();
-        return view('admin.maintenance.account.user', compact('userList', 'name', 'dept', 'domain', 'roleid','email', 'roles'));
+        return view('admin.maintenance.account.user', compact(
+            'userList',
+            'name',
+            'dept',
+            'domain',
+            'roleid',
+            'email',
+            'roles',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     public function updateUser(Request $request)
     {
-       
+
         if ($request->has('unlock_user')) {
 
             $id = $request->input('id');
@@ -158,7 +183,7 @@ class UserMaintenanceController extends Controller
 
         $roleArr = Role::find($request->input('role_id'));
         $role = $roleArr['name'];
-        $role_id = $request->input('role_id');       
+        $role_id = $request->input('role_id');
         if ($request->has('e_user')) {
 
             $request->validate([

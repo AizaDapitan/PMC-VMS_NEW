@@ -4,11 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\RoleRightService;
 
 class VehicleReportDestinationController extends Controller
 {
+    public function __construct(
+		RoleRightService $roleRightService
+	) {
+		$this->roleRightService = $roleRightService;
+	}
     public function index(Request $request)
     {
+		$rolesPermissions = $this->roleRightService->hasPermissions("Top Frequent Destinations");
+		if (!$rolesPermissions['view']) {
+		    abort(401);
+		}
 
         $start = $request->has('start');
         $end = $request->has('end');

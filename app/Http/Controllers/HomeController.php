@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Department;
 use Illuminate\Support\Facades\DB;
+use App\Services\RoleRightService;
 
 class HomeController extends Controller
 {
@@ -24,6 +25,11 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
         $departments = Department::all();
@@ -35,6 +41,17 @@ class HomeController extends Controller
 
     public function dashboard(Request $request)
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Downtime Dashboard");
+
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
 
         $query = "
         select
@@ -50,7 +67,7 @@ class HomeController extends Controller
             (
                 (
                     d.dateStart >= " . "'" . $request->query("start") . "'" . "
-                    and d.dateEnd <= " . "'" . $request->query("end") . " 23:59:59". "'" ."
+                    and d.dateEnd <= " . "'" . $request->query("end") . " 23:59:59" . "'" . "
                 )
                 OR (
                     d.dateEnd >= " . "'" .  $request->query("start") . "'" . "
@@ -61,19 +78,42 @@ class HomeController extends Controller
             d.id desc";
 
         $result = DB::select($query);
-       
-        return view('admin.dashboard.index', compact('result'));
+
+        return view('admin.dashboard.index', compact(
+            'result',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     public function maintenance()
     {
-        return view('admin.maintenance.index');
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
+        return view('admin.maintenance.index', compact(
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     public function downtime()
     {
         return redirect('/dashboard');
     }
-
-    
 }

@@ -6,11 +6,21 @@ use App\Drivers;
 use App\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\RoleRightService;
 
 class VehicleReportTripTicketController extends Controller
 {
+    public function __construct(
+		RoleRightService $roleRightService
+	) {
+		$this->roleRightService = $roleRightService;
+	}
     public function index(Request $request)
     {
+		$rolesPermissions = $this->roleRightService->hasPermissions("TTrip Tickets");
+		if (!$rolesPermissions['view']) {
+		    abort(401);
+		}
         $drivers = Drivers::all();
         $unit = Unit::all();
         $condition = "";

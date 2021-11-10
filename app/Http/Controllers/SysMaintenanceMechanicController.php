@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mechanic;
 use Illuminate\Http\Request;
+use App\Services\RoleRightService;
 
 class SysMaintenanceMechanicController extends Controller
 {
@@ -12,10 +13,30 @@ class SysMaintenanceMechanicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(
+        RoleRightService $roleRightService
+    ) {
+        $this->roleRightService = $roleRightService;
+    }
     public function index()
     {
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
+
         $mechanics = Mechanic::all();
-        return view('admin.maintenance.mechanic',compact('mechanics'));
+        return view('admin.maintenance.mechanic', compact(
+            'mechanics',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -37,8 +58,8 @@ class SysMaintenanceMechanicController extends Controller
     public function store(Request $request)
     {
         Mechanic::create([
-            'name'=> $request->get('name'),
-            'active'=> 1
+            'name' => $request->get('name'),
+            'active' => 1
         ]);
 
         return redirect()->back();
@@ -63,9 +84,25 @@ class SysMaintenanceMechanicController extends Controller
      */
     public function edit($id)
     {
+
+        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
+
+        $create = $rolesPermissions['create'];
+        $edit = $rolesPermissions['edit'];
+        $delete = $rolesPermissions['delete'];
+        $print = $rolesPermissions['print'];
+        $upload = $rolesPermissions['upload'];
         $item = Mechanic::find($id);
         $mechanics = Mechanic::all();
-        return  view('admin.maintenance.mechanic',compact('item','mechanics'));
+        return  view('admin.maintenance.mechanic', compact(
+            'item',
+            'mechanics',
+            'create',
+            'edit',
+            'delete',
+            'print',
+            'upload'
+        ));
     }
 
     /**
@@ -93,9 +130,8 @@ class SysMaintenanceMechanicController extends Controller
     public function destroy($id)
     {
         $mechanic = Mechanic::find($id);
-      
-        if($mechanic)
-        {
+
+        if ($mechanic) {
             Mechanic::destroy($id);
         }
 

@@ -51,7 +51,12 @@
                             <i class="fa fa-users font-red-sunglo"></i>
                             <span class="caption-subject bold uppercase"> Role Form</span>
                         </div>
+                        @if($create)
                         <a class="btn btn-sm blue pull-right" href="{{route('maintenance.role')}}">Add New</a>
+                        @else
+                        <button disabled class="btn btn-sm blue pull-right" href="{{route('maintenance.role')}}">Add New</button>
+                        
+                        @endif
                     </div>
 
                     <div class="portlet-body form">
@@ -89,13 +94,25 @@
                                     <div class="row">
                                         
                                         @if(Request::get('id'))
+                                            @if($edit)
                                             <button class="btn purple pull-right" type="submit" name="e_role">
                                                 <span class="glyphicon glyphicon-edit"></span> Update
                                             </button>
+                                            @else
+                                            <button disabled class="btn purple pull-right" type="submit" name="e_role">
+                                                <span class="glyphicon glyphicon-edit"></span> Update
+                                            </button>
+                                            @endif
                                         @else
+                                            @if($create)
                                             <button class="btn blue pull-right" type="submit" name="a_role">
                                                 <span class="glyphicon glyphicon-send"></span> Submit
                                             </button>
+                                            @else
+                                            <button disabled class="btn blue pull-right" type="submit" name="a_role">
+                                                <span class="glyphicon glyphicon-send"></span> Submit
+                                            </button>
+                                            @endif
                                         @endif
 
                                     </div>
@@ -153,7 +170,7 @@
                                 <div class="tools"> </div>
                             </div>
                             <div class="portlet-body">
-                                <table class="table table-striped table-bordered table-hover" id="sample_2">
+                                <table class="table table-striped table-bordered table-hover" id="sample_101">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
@@ -183,17 +200,30 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if($edit)
                                                 <a class="btn btn-circle btn-sm blue"
                                                     href="{{Request::url()}}?id={{$role->id}}">
                                                     <i class="fa fa-edit"></i> Edit
                                                 </a>
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm blue"
+                                                    href="{{Request::url()}}?id={{$role->id}}">
+                                                    <i class="fa fa-edit"></i> Edit
+                                                </button>
+                                                @endif
 
                                                 @if($role->active == 1)
-
+                                                @if($edit)
                                                 <a class="btn btn-circle btn-sm green" data-toggle="modal"
                                                     href="#inactive{{$role->id}}">
                                                     <i class="fa fa-check"></i> Active
                                                 </a>
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm green" data-toggle="modal"
+                                                    href="#inactive{{$role->id}}">
+                                                    <i class="fa fa-check"></i> Active
+                                                </button>
+                                                @endif
 
                                                 <div class="modal fade" id="inactive{{$role->id}}" tabindex="-1"
                                                     role="basic" aria-hidden="true">
@@ -226,10 +256,17 @@
 
                                                 @elseif(! $role->active == 1)
 
+                                                @if($create)
                                                 <a class="btn btn-circle btn-sm red" data-toggle="modal"
                                                     href="#active{{$role->id}}">
                                                     <i class="fa fa-close"></i> Inactive
                                                 </a>
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm red" data-toggle="modal"
+                                                    href="#active{{$role->id}}">
+                                                    <i class="fa fa-close"></i> Inactive
+                                                </button>
+                                                @endif
                                                 <div class="modal fade" id="active{{$role->id}}" tabindex="-1"
                                                     role="basic" aria-hidden="true">
                                                     <div class="modal-dialog">

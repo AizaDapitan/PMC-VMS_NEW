@@ -16,8 +16,10 @@
                     <div class="tabbable portlet-tabs">
                         <ul class="nav nav-tabs">
                             <li class="">
+                                @if($create)
                                 <a href="#portlet_tab_2" data-toggle="tab">
                                 Add New </a>
+                                @endif
                             </li>
                             <li class="active">
                                 <a href="#portlet_tab_1" data-toggle="tab">
@@ -80,8 +82,17 @@
                                                         <form action="{{route('maintenance.mechanic.destroy', ['mechanic' => $item->id])}}" method="POST">
                                                             @method('delete')
                                                             @csrf
+                                                            @if($edit)
                                                             <a href="{{ route('maintenance.mechanic.edit', ['mechanic' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                                                            @else
+                                                            <button disabled href="{{ route('maintenance.mechanic.edit', ['mechanic' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></button>
+                                                            @endif
+                                                            @if($delete)
                                                             <button type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>
+                                                            @else
+                                                            <button disabled type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>
+                                                            
+                                                            @endif
                                                         </form>
                                                         
                                                     </td>

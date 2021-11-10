@@ -58,9 +58,15 @@
        
                             <div class="form-group row mb-0 text-center">
                                 <div class="col-md-12">
+                                    @if($edit)
                                     <button type="submit" class="btn btn-primary">
                                         Update Password
                                     </button>
+                                    @else
+                                    <button disabled type="submit" class="btn btn-primary">
+                                        Update Password
+                                    </button>
+                                    @endif
                                 </div>
                             </div>
 

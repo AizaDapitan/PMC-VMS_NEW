@@ -17,9 +17,11 @@
                     <div class="portlet-tabs">
                         <ul class="nav nav-tabs">
                             <li>
+                                @if($create)
                                 <a href="#portlet_tab2" data-toggle="tab">
                                     Add New 
                                 </a>
+                                @endif
                             </li>
                             <li class="active">
                                 <a href="#portlet_tab1" data-toggle="tab">
@@ -232,11 +234,20 @@
                                                         <form action="{{route('maintenance.unit.destroy', ['unit' => $item->id])}}" method="POST">
                                                             @method('delete')
                                                             @csrf
+                                                            @if($edit)
                                                             <a href="{{ route('maintenance.unit.edit', ['unit' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
                                                             @if($item->is_dispose==0)
                                                             <a href="maintenance/unit/{{ $item->id }}/dispose" class="btn blue btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Deactivate"><i class="fa fa-times"></i></a>
                                                             @else
                                                             <a href="maintenance/unit/{{ $item->id }}/undispose" class="btn purple btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Activate"><i class="fa fa-check"></i></a>
+                                                            @endif
+                                                            @else
+                                                            <button disabled href="{{ route('maintenance.unit.edit', ['unit' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></button>
+                                                            @if($item->is_dispose==0)
+                                                            <button disabled href="maintenance/unit/{{ $item->id }}/dispose" class="btn blue btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Deactivate"><i class="fa fa-times"></i></button>
+                                                            @else
+                                                            <button disabled href="maintenance/unit/{{ $item->id }}/undispose" class="btn purple btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Activate"><i class="fa fa-check"></i></button>
+                                                            @endif
                                                             @endif
                                                             <button type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>                                                            
                                                         </form>                                                        

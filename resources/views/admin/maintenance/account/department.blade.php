@@ -50,7 +50,11 @@
                             <i class="fa fa-users font-red-sunglo"></i>
                             <span class="caption-subject bold uppercase"> User Form</span>
                         </div>
+                        @if($create)
                         <a class="btn btn-sm blue pull-right" href="{{route('maintenance.dept')}}">Add New</a>
+                        @else
+                        <button disabled class="btn btn-sm blue pull-right" href="{{route('maintenance.dept')}}">Add New</button>
+                        @endif
                     </div>
                     <div class="portlet-body form">
                         <div class="row">
@@ -108,31 +112,12 @@
 
                                     <div class="row">
                                         <div class="col-md-6">
-
-                                            @if(isset($role))
-
-                                            <label class="control-label">Role</label>
-                                            <select required class="form-control" name="u_role">
-
-
-                                                @if( $role == 'requestor')
-
-                                                <option value="{{$role}}">{{{ucfirst($role)}}}</option>
-                                                <option value="requestor">REQUESTOR</option>
-
-                                                @endif
-
-                                            </select>
-
-                                            @else                                           
-
-                                            <label class="control-label">Role</label>
-                                            <select required class="form-control" name="u_role">
-                                                <option value="">-- Select Role --</option>
-                                                <option value="requestor">REQUESTOR</option>
-                                            </select>
-
-                                            @endif                                               
+                                        <label class="control-label">Role</label>
+                                            <select required name="role_id" id="role_id" class="form-control">
+                                                @foreach($roles as $role)
+                                                <option value="{{ $role['id'] }}" {{ ($role['id'] == $roleid) ? 'selected' : '' }}>{{ $role['name'] }}</option>
+                                                @endforeach
+                                            </select>                                           
                                         </div>
 
                                         <div class="col-md-6">
@@ -155,16 +140,28 @@
                                     <br>
                                     <div class="row">
                                         @if(Request::get('id'))
-
-                                        <button class="btn purple pull-right" type="submit" name="e_user">
-                                            <span class="glyphicon glyphicon-edit"></span> Update
-                                        </button>
+                                        
+                                            @if($edit)
+                                                <button class="btn purple pull-right" type="submit" name="e_user">
+                                                    <span class="glyphicon glyphicon-edit"></span> Update
+                                                </button>
+                                            @else
+                                                <button disabled class="btn purple pull-right" type="submit" name="e_user">
+                                                    <span class="glyphicon glyphicon-edit"></span> Update
+                                                </button>
+                                            @endif
 
                                         @else
 
-                                        <button class="btn blue pull-right" type="submit" name="a_user">
-                                            <span class="glyphicon glyphicon-send"></span> Submit
-                                        </button>
+                                            @if($create)
+                                                <button class="btn blue pull-right" type="submit" name="a_user">
+                                                    <span class="glyphicon glyphicon-send"></span> Submit
+                                                </button>
+                                            @else
+                                                <button disabled class="btn blue pull-right" type="submit" name="a_user">
+                                                    <span class="glyphicon glyphicon-send"></span> Submit
+                                                </button>
+                                            @endif
 
                                         @endif
                                     </div>
@@ -248,20 +245,34 @@
                                                 <center>
 
                                                     @if( $item->isLocked == 1)
-
+                                                    @if($edit)
                                                     <a title='Unlock User' data-toggle='modal'
                                                         class='btn btn-circle btn-icon-only red'
                                                         href='#unlock{{$item->id}}'>
                                                         <span class='fa fa-lock'></span>
                                                     </a>
+                                                    @else
+                                                    <button disabled title='Unlock User' data-toggle='modal'
+                                                        class='btn btn-circle btn-icon-only red'
+                                                        href='#unlock{{$item->id}}'>
+                                                        <span class='fa fa-lock'></span>
+                                                    </button>
+                                                    @endif
 
                                                     @elseif(! $item->isLocked == 1)
-
+                                                    @if($edit)
                                                     <a title='Lock User' data-toggle='modal'
                                                         class='btn btn-circle btn-icon-only green'
                                                         href='#lock{{$item->id}}'>
                                                         <span class='fa fa-unlock'></span>
                                                     </a>
+                                                    @else
+                                                    <button disabled title='Lock User' data-toggle='modal'
+                                                        class='btn btn-circle btn-icon-only green'
+                                                        href='#lock{{$item->id}}'>
+                                                        <span class='fa fa-unlock'></span>
+                                                    </button>
+                                                    @endif
 
                                                     @endif
 
@@ -328,17 +339,29 @@
                                                 </div>
                                             </td>
                                             <td>
+                                                @if($edit)
                                                 <a class="btn btn-circle btn-sm blue"
                                                     href="{{Request::url()}}?id={{$item->id}}">
                                                     <i class="fa fa-edit"></i> Edit
                                                 </a>
-
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm blue"
+                                                    href="{{Request::url()}}?id={{$item->id}}">
+                                                    <i class="fa fa-edit"></i> Edit
+                                                </button>
+                                                @endif
                                                 @if($item->active == 1)
-
+                                                @if($edit)
                                                 <a class="btn btn-circle btn-sm green" data-toggle="modal"
                                                     href="#inactive{{$item->id}}">
                                                     <i class="fa fa-check"></i> Active
                                                 </a>
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm green" data-toggle="modal"
+                                                    href="#inactive{{$item->id}}">
+                                                    <i class="fa fa-check"></i> Active
+                                                </button>
+                                                @endif
 
                                                 <div class="modal fade" id="inactive{{$item->id}}" tabindex="-1"
                                                     role="basic" aria-hidden="true">
@@ -370,11 +393,17 @@
                                                 </div>
 
                                                 @elseif(! $item->active == 1)
-
+                                                @if($edit)
                                                 <a class="btn btn-circle btn-sm red" data-toggle="modal"
                                                     href="#active{{$item->id}}">
                                                     <i class="fa fa-close"></i> Inactive
                                                 </a>
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm red" data-toggle="modal"
+                                                    href="#active{{$item->id}}">
+                                                    <i class="fa fa-close"></i> Inactive
+                                                </button>
+                                                @endif
                                                 <div class="modal fade" id="active{{$item->id}}" tabindex="-1"
                                                     role="basic" aria-hidden="true">
                                                     <div class="modal-dialog">

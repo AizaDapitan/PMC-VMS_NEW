@@ -61,7 +61,11 @@
                             <i class="fa fa-users font-red-sunglo"></i>
                             <span class="caption-subject bold uppercase"> User Form </span>
                         </div>
+                        @if($create)
                         <a class="btn btn-sm blue pull-right" href="{{ route('maintenance.user')}}">Add New</a>
+                        @else
+                        <button disabled class="btn btn-sm blue pull-right" href="{{ route('maintenance.user')}}">Add New</button>
+                        @endif
                     </div>
                     <div class="portlet-body form">
                         <div class="row">
@@ -172,18 +176,28 @@
                                     <br />
 
                                     @if(Request::get('id'))
-
                                     <div class="row">
-                                        <button class="btn purple pull-right" type="submit" name="e_user">
+                                    @if($edit)
+                                       <button class="btn purple pull-right" type="submit" name="e_user">
                                             <span class="glyphicon glyphicon-edit"></span> Update
                                         </button>
+                                    @else
+                                        <button disabled class="btn purple pull-right" type="submit" name="e_user">
+                                            <span class="glyphicon glyphicon-edit"></span> Update
+                                        </button>
+                                    @endif
                                     </div>
 
                                     @else
-
+                                    @if($create)
                                     <button class="btn blue pull-right" type="submit" name="a_user">
                                         <span class="glyphicon glyphicon-send"></span> Submit
                                     </button>
+                                    @else
+                                    <button disabled class="btn blue pull-right" type="submit" name="a_user">
+                                        <span class="glyphicon glyphicon-send"></span> Submit
+                                    </button>
+                                    @endif
 
                                     @endif
 
@@ -215,7 +229,7 @@
                                 <div class="tools"> </div>
                             </div>
                             <div class="portlet-body">
-                                <table class="table table-striped table-bordered table-hover" id="sample_1">
+                                <table class="table table-striped table-bordered table-hover" id="sample_101">
                                     <thead>
                                         <tr>
                                             <th>User</th>
@@ -246,13 +260,25 @@
                                             <td>
                                                 <center>
                                                     @if( $item->isLocked == 1)
+                                                    @if($edit)
                                                     <a title='Unlock User' data-toggle='modal' class='btn btn-circle btn-icon-only red' href='#unlock{{$item->id}}'>
                                                         <span class='fa fa-lock'></span>
                                                     </a>
+                                                    @else
+                                                    <button disabled title='Unlock User' data-toggle='modal' class='btn btn-circle btn-icon-only red' href='#unlock{{$item->id}}'>
+                                                        <span class='fa fa-lock'></span>
+                                                    </button>
+                                                    @endif
                                                     @elseif(! $item->isLocked == 1)
+                                                    @if($edit)
                                                     <a title='Lock User' data-toggle='modal' class='btn btn-circle btn-icon-only green' href='#lock{{$item->id}}'>
                                                         <span class='fa fa-unlock'></span>
                                                     </a>
+                                                    @else
+                                                    <button disabled title='Lock User' data-toggle='modal' class='btn btn-circle btn-icon-only green' href='#lock{{$item->id}}'>
+                                                        <span class='fa fa-unlock'></span>
+                                                    </button>
+                                                    @endif
                                                     @endif
                                                 </center>
 
@@ -297,16 +323,26 @@
                                                 </div>
 
                                             <td>
-
+                                                @if($edit)
                                                 <a class="btn btn-circle btn-sm blue" href="{{Request::url()}}?id={{$item->id}}">
                                                     <i class="fa fa-edit"></i> Edit
                                                 </a>
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm blue" href="{{Request::url()}}?id={{$item->id}}">
+                                                    <i class="fa fa-edit"></i> Edit
+                                                </button>
+                                                @endif
 
                                                 @if($item->active == 1)
-
+                                                @if($edit)
                                                 <a class="btn btn-circle btn-sm green" data-toggle="modal" href="#inactive{{$item->id}}">
                                                     <i class="fa fa-check"></i> Active
                                                 </a>
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm green" data-toggle="modal" href="#inactive{{$item->id}}">
+                                                    <i class="fa fa-check"></i> Active
+                                                </button>
+                                                @endif
                                                 <div class="modal fade" id="inactive{{$item->id}}" tabindex="-1" role="basic" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <form action="{{route('maintenance.user.update')}}" method="POST">
@@ -329,10 +365,15 @@
 
 
                                                 @elseif(! $item->active == 1)
-
+                                                @if($edit)
                                                 <a class="btn btn-circle btn-sm red" data-toggle="modal" href="#active{{$item->id}}">
                                                     <i class="fa fa-close"></i> Inactive
                                                 </a>
+                                                @else
+                                                <button disabled class="btn btn-circle btn-sm red" data-toggle="modal" href="#active{{$item->id}}">
+                                                    <i class="fa fa-close"></i> Inactive
+                                                </button>
+                                                @endif
 
                                                 <div class="modal fade" id="active{{$item->id}}" tabindex="-1" role="basic" aria-hidden="true">
                                                     <div class="modal-dialog">
@@ -385,13 +426,13 @@
 
 
 @push('javascript')
-<!-- <script>
+<script>
     jQuery(document).ready(function() {
         Metronic.init(); // init metronic core components
         Layout.init(); // init current layout
         TableManaged.init();
     });
-</script> -->
+</script>
 <script>
     let TableManaged = function() {
 
@@ -400,45 +441,45 @@
             let table = $('#sample_1');
 
             // begin first table
-            // table.dataTable({
-            //     "columns": [{
-            //         "orderable": true
-            //     }, {
-            //         "orderable": true
-            //     }, {
-            //         "orderable": true
-            //     }, {
-            //         "orderable": true
-            //     }, {
-            //         "orderable": false
-            //     }],
-            //     "lengthMenu": [
-            //         [5, 15, 20, -1],
-            //         [5, 15, 20, "All"] // change per page values here
-            //     ],
-            //     // set the initial value
-            //     "pageLength": 5,
-            //     "pagingType": "bootstrap_full_number",
-            //     "language": {
-            //         "lengthMenu": "  _MENU_ records",
-            //         "paginate": {
-            //             "previous": "Prev",
-            //             "next": "Next",
-            //             "last": "Last",
-            //             "first": "First"
-            //         }
-            //     },
-            //     "columnDefs": [{ // set default column settings
-            //         'orderable': false,
-            //         'targets': [0]
-            //     }, {
-            //         "searchable": false,
-            //         "targets": [0]
-            //     }],
-            //     "order": [
-            //         [0, "desc"]
-            //     ] // set first column as a default sort by asc
-            // });
+            table.dataTable({
+                "columns": [{
+                    "orderable": true
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": true
+                }, {
+                    "orderable": false
+                }],
+                "lengthMenu": [
+                    [5, 15, 20, -1],
+                    [5, 15, 20, "All"] // change per page values here
+                ],
+                // set the initial value
+                "pageLength": 5,
+                "pagingType": "bootstrap_full_number",
+                "language": {
+                    "lengthMenu": "  _MENU_ records",
+                    "paginate": {
+                        "previous": "Prev",
+                        "next": "Next",
+                        "last": "Last",
+                        "first": "First"
+                    }
+                },
+                "columnDefs": [{ // set default column settings
+                    'orderable': false,
+                    'targets': [0]
+                }, {
+                    "searchable": false,
+                    "targets": [0]
+                }],
+                "order": [
+                    [0, "desc"]
+                ] // set first column as a default sort by asc
+            });
 
             let tableWrapper = jQuery('#sample_1_wrapper');
 

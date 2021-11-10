@@ -61,7 +61,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for=""> OR Add New: </label>
-                                    <input type="text" class="form-control" id="dtype2" name="dtype2" placeholder="New Type" required maxlength="30">
+                                    <input type="text" class="form-control" id="dtype2" name="dtype2" placeholder="New Type">
                                 </div>
 
 
@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for=""> OR Add New: </label>
-                                    <input type="text" class="form-control" id="edtype2" name="edtype2" placeholder="New Type" required maxlength="30">
+                                    <input type="text" class="form-control" id="edtype2" name="edtype2" placeholder="New Type">
                                 </div>
 
 
@@ -125,10 +125,17 @@
 
                 <div class="col-md-10 text-right">
                     <div>
+                        @if($create)
                         <a class="btn blue btn-sm" href="#" style="margin-left: 10px;"
                             onclick="$('#modal-add').modal('show');">
                             <span class="fa fa-plus"></span> Add New
                         </a>
+                        @else
+                        <button disabled class="btn blue btn-sm" href="#" style="margin-left: 10px;"
+                            onclick="$('#modal-add').modal('show');">
+                            <span class="fa fa-plus"></span> Add New
+                        </button>
+                        @endif
                         <a class="btn green btn-sm" href="{{route('vehicle.request.export')}}" style="margin-left: 10px;">
                             <span class="fa fa-download"></span> Download List
                         </a>
@@ -176,6 +183,7 @@
                                     {{$item->type}}<input type="hidden" name="driver{{$item->id}}" id="driver{{$item->id}}" value="{{$item->id}}|{{$item->driver_name}}|{{$item->type}}">
                                 </td>            
                                 <td>
+                                    @if($edit)
                                     <form action="{{route('vehicle.drivers.submit', ['act' => 'activate', 'id' => $item->id])}}" method="POST">
                                         @csrf
 
@@ -189,6 +197,22 @@
 
                                     <a href="javascript:void(0)" class="btn btn-xs red" onclick="disable_driver({{$item->id}})">Disable</a>
 
+                                    @endif
+                                    @else
+                                    <form action="{{route('vehicle.drivers.submit', ['act' => 'activate', 'id' => $item->id])}}" method="POST">
+                                        @csrf
+
+                                        <button disabled href="#" onclick="edit({{$item->id}})" class="btn btn-xs green" >Edit</button>
+
+                                    @if($item->isActive == 0)
+
+                                        <button disabled type="submit" class="btn btn-xs blue">Enable</button>
+
+                                    @else
+
+                                    <button disabled href="javascript:void(0)" class="btn btn-xs red" onclick="disable_driver({{$item->id}})">Disable</button>
+
+                                    @endif
                                     @endif
 
                                     </form>

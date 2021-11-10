@@ -26,15 +26,14 @@ class RoleRightController extends Controller
     }
     public function index()
     {        
-        //$rolesPermissions = $this->roleRightService->hasPermissions("Role Rights");
+        $rolesPermissions = $this->roleRightService->hasPermissions("Role Rights");
 
-        //if (!$rolesPermissions['view']) {
-            //abort(401);
-        //}
+        if (!$rolesPermissions['view']) {
+            abort(401);
+        }
 
-        //$create = $rolesPermissions['create'];
+        $create = $rolesPermissions['create'];
 
-        $create = true;
 
         $roles = auth()->user()->role;
         $roles =  $this->roleService->all()->where('active', '1')->where('name', '<>', 'ADMIN')->sortBy('name');

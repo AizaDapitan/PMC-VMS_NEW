@@ -186,8 +186,7 @@
                         @if(isset($successMsg))
 
                         <script>
-                            setTimeout(function(){ $('#success').fadeOut();
-                            }, 3000 );
+                            $('#success').fadeOut();
                         </script>
 
                         <div id="success" class="alert alert-success alert-dismissable">

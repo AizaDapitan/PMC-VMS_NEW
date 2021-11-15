@@ -109,7 +109,7 @@ class DepartmentMaintenanceController extends Controller
             return redirect()->back();
         }
 
-        if ($request->has('active')) {
+        if ($request->has('activate')) {
             $id = $request->input('id');
             $user = User::find($id);
 
@@ -120,7 +120,7 @@ class DepartmentMaintenanceController extends Controller
 
             $user->update(['active' => 1]);
 
-            Session::flash('successMsg', "User has been Activated...");
+            Session::flash('success', "User has been Activated...");
             return redirect()->back();
         }
 
@@ -136,7 +136,7 @@ class DepartmentMaintenanceController extends Controller
 
             $user->update(['active' => 0]);
 
-            Session::flash('successMsg', "User has been Deactivated...");
+            Session::flash('success', "User has been Deactivated...");
             return redirect()->back();
         }
 

@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Mechanic;
 use Illuminate\Http\Request;
-use App\Services\RoleRightService;
-use Illuminate\Support\Facades\Session;
 
 class SysMaintenanceMechanicController extends Controller
 {
@@ -14,30 +12,10 @@ class SysMaintenanceMechanicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(
-        RoleRightService $roleRightService
-    ) {
-        $this->roleRightService = $roleRightService;
-    }
     public function index()
     {
-        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
-
-        $create = $rolesPermissions['create'];
-        $edit = $rolesPermissions['edit'];
-        $delete = $rolesPermissions['delete'];
-        $print = $rolesPermissions['print'];
-        $upload = $rolesPermissions['upload'];
-
         $mechanics = Mechanic::all();
-        return view('admin.maintenance.mechanic', compact(
-            'mechanics',
-            'create',
-            'edit',
-            'delete',
-            'print',
-            'upload'
-        ));
+        return view('admin.maintenance.mechanic',compact('mechanics'));
     }
 
     /**
@@ -59,11 +37,10 @@ class SysMaintenanceMechanicController extends Controller
     public function store(Request $request)
     {
         Mechanic::create([
-            'name' => $request->get('name'),
-            'active' => 1
+            'name'=> $request->get('name'),
+            'active'=> 1
         ]);
 
-        Session::flash('success', " Mechanic Created Successfully...");
         return redirect()->back();
     }
 
@@ -86,25 +63,9 @@ class SysMaintenanceMechanicController extends Controller
      */
     public function edit($id)
     {
-
-        $rolesPermissions = $this->roleRightService->hasPermissions("Vehicle Maintenance");
-
-        $create = $rolesPermissions['create'];
-        $edit = $rolesPermissions['edit'];
-        $delete = $rolesPermissions['delete'];
-        $print = $rolesPermissions['print'];
-        $upload = $rolesPermissions['upload'];
         $item = Mechanic::find($id);
         $mechanics = Mechanic::all();
-        return  view('admin.maintenance.mechanic', compact(
-            'item',
-            'mechanics',
-            'create',
-            'edit',
-            'delete',
-            'print',
-            'upload'
-        ));
+        return  view('admin.maintenance.mechanic',compact('item','mechanics'));
     }
 
     /**
@@ -120,7 +81,7 @@ class SysMaintenanceMechanicController extends Controller
         $mechanic->name = request()->get('name');
         $mechanic->save();
 
-        return redirect()->back()->with('success', 'Mechanic has been updated!!');
+        return redirect()->back();
     }
 
     /**
@@ -132,8 +93,9 @@ class SysMaintenanceMechanicController extends Controller
     public function destroy($id)
     {
         $mechanic = Mechanic::find($id);
-
-        if ($mechanic) {
+      
+        if($mechanic)
+        {
             Mechanic::destroy($id);
         }
 

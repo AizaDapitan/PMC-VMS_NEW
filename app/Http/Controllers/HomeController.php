@@ -66,14 +66,15 @@ class HomeController extends Controller
             WHERE
             (
                 (
-                    d.dateStart >= " . "'" . $request->query("start") . "'" . "
-                    and d.dateEnd <= " . "'" . $request->query("end") . " 23:59:59" . "'" . "
+                    d.dateStart >= " . "'" . $request->query("startDate") . "'" . "
+                    and d.dateEnd <= " . "'" . $request->query("endDate") . " 23:59:59" . "'" . "
                 )
                 OR (
-                    d.dateEnd >= " . "'" .  $request->query("start") . "'" . "
-                    and d.dateEnd <= " . "'" . $request->query("end") . " 23:59:59" . "'" . "
+                    d.dateEnd >= " . "'" .  $request->query("startDate") . "'" . "
+                    and d.dateEnd <= " . "'" . $request->query("endDate") . " 23:59:59" . "'" . "
                 )
             )
+            and d.active = 1
             order by
             d.id desc";
 

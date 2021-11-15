@@ -683,7 +683,7 @@ class VehicleRequestController extends Controller
         $vehicle_request = VehicleRequest::where('id', $dispatch->request_id)->first();
         $unit = Unit::where('id', $dispatch->unitId)->first();
         $driver = Drivers::where('id', $dispatch->driver_id)->first();
-
+        dd('here');
         if ($dispatch->fuel_added_qty == null || $dispatch->fuel_added_qty == 0) {
             $dispatch->fuel_added_qty = 1;
         }
@@ -693,7 +693,22 @@ class VehicleRequestController extends Controller
 
         return view('admin.requests.trip_completed', compact('dispatch', 'vehicle_request', 'unit', 'driver', 'id', 'total'));
     }
+    public function tripcompleted_addDispatch($id)
+    {
 
+        $dispatch = Dispatch::where('request_id', $id)->first();
+        $vehicle_request = VehicleRequest::where('id', $dispatch->request_id)->first();
+        $unit = Unit::where('id', $dispatch->unitId)->first();
+        $driver = Drivers::where('id', $dispatch->driver_id)->first();  
+        if ($dispatch->fuel_added_qty == null || $dispatch->fuel_added_qty == 0) {
+            $dispatch->fuel_added_qty = 1;
+        }
+
+        $total = ($dispatch->odometer_end - $dispatch->odometer_start) / $dispatch->fuel_added_qty;
+        $total = number_format((float) $total, 4, '.', '') . ' Km per Liter';
+
+        return view('admin.requests.trip_completed', compact('dispatch', 'vehicle_request', 'unit', 'driver', 'id', 'total'));
+    }
     public function dispatchDetails($id, Request $request)
     {
         $rolesPermissions = $this->roleRightService->hasPermissions("Request List");

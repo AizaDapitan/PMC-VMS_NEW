@@ -141,26 +141,27 @@ Route::middleware('auth')->group(function () {
             Route::get('/repair_hours_heavy_vehicle', 'DowntimeChartsController@rpHeavyVehicle')->name('rpHeavyVehicle');
             Route::get('/repair_hours_motorcycle', 'DowntimeChartsController@rpMotor')->name('rpMotor');
 
-            // Route::get('/edit','DowntimeController@downtime_edit')->name('downtime_edit');
-            // Route::post('/edit','DowntimeController@downtime_update')->name('downtime_update');
+            Route::get('{id}/edit','DowntimeController@edit')->name('downtime_edit');
+            Route::patch('{downtime}/update','DowntimeController@update')->name('downtime_update');
+            Route::delete('{id}/destroy','DowntimeController@destroy')->name('downtime_destroy');
         });
     });
 
-    Route::prefix('downtime')->group(function () {
-        Route::name('downtime.')->group(function () {
-            Route::get('/repair_hours_by_category', 'DowntimeChartsController@repairHours')->name('repairhours');
-            Route::get('/mtd_availability_due_to_breakdown_light', 'DowntimeChartsController@mtdLightVehicle')->name('mtdLightVehicle');
-            Route::get('/mtd_availability_due_to_breakdown_medium', 'DowntimeChartsController@mtdMediumVehicle')->name('mtdMediumVehicle');
-            Route::get('/mtd_availability_due_to_breakdown_heavy', 'DowntimeChartsController@mtdHeavyVehicle')->name('mtdHeavyVehicle');
-            Route::get('/man_hours_distribution', 'DowntimeChartsController@manHours')->name('manhours');
-            Route::get('/mtd_availability_due_to_breakdown_motorcycle', 'DowntimeChartsController@mtdMotor')->name('mtdMotor');
-            Route::get('/repair_hours_by_repair_type', 'DowntimeChartsController@repairType')->name('repairtype');
-            Route::get('/repair_hours_light_vehicle', 'DowntimeChartsController@rpLightVehicle')->name('rpLightVehicle');
-            Route::get('/repair_hours_medium_vehicle', 'DowntimeChartsController@rpMediumVehicle')->name('rpMediumVehicle');
-            Route::get('/repair_hours_heavy_vehicle', 'DowntimeChartsController@rpHeavyVehicle')->name('rpHeavyVehicle');
-            Route::get('/repair_hours_motorcycle', 'DowntimeChartsController@rpMotor')->name('rpMotor');
-        });
-    });
+    // Route::prefix('downtime')->group(function () {
+    //     Route::name('downtime.')->group(function () {
+    //         Route::get('/repair_hours_by_category', 'DowntimeChartsController@repairHours')->name('repairhours');
+    //         Route::get('/mtd_availability_due_to_breakdown_light', 'DowntimeChartsController@mtdLightVehicle')->name('mtdLightVehicle');
+    //         Route::get('/mtd_availability_due_to_breakdown_medium', 'DowntimeChartsController@mtdMediumVehicle')->name('mtdMediumVehicle');
+    //         Route::get('/mtd_availability_due_to_breakdown_heavy', 'DowntimeChartsController@mtdHeavyVehicle')->name('mtdHeavyVehicle');
+    //         Route::get('/man_hours_distribution', 'DowntimeChartsController@manHours')->name('manhours');
+    //         Route::get('/mtd_availability_due_to_breakdown_motorcycle', 'DowntimeChartsController@mtdMotor')->name('mtdMotor');
+    //         Route::get('/repair_hours_by_repair_type', 'DowntimeChartsController@repairType')->name('repairtype');
+    //         Route::get('/repair_hours_light_vehicle', 'DowntimeChartsController@rpLightVehicle')->name('rpLightVehicle');
+    //         Route::get('/repair_hours_medium_vehicle', 'DowntimeChartsController@rpMediumVehicle')->name('rpMediumVehicle');
+    //         Route::get('/repair_hours_heavy_vehicle', 'DowntimeChartsController@rpHeavyVehicle')->name('rpHeavyVehicle');
+    //         Route::get('/repair_hours_motorcycle', 'DowntimeChartsController@rpMotor')->name('rpMotor');
+    //     });
+    // });
 
     //Vehicle Request
     Route::prefix('vehicle')->group(function () {
@@ -173,13 +174,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/dispatch/{id}/create/', 'VehicleRequestController@tripTicket')->name('request.dispatch');
             Route::get('/request/list/{item?}', 'VehicleRequestController@list')->name('request.list');
             Route::get('/request/all', 'VehicleRequestController@getRequests')->name('request.all');
-            Route::get('/{id}/cancel', 'VehicleRequestController@cancelRequest')->name('request.cancel');
+            Route::post('/{id}/cancel', 'VehicleRequestController@cancelRequest')->name('request.cancel');
             Route::get('/request/{id}', 'VehicleRequestController@get')->name('request.get');
             Route::get('/request/export', 'VehicleRequestController@exportRequests')->name('request.export');
             Route::post('/request/{id}/message', 'VehicleRequestController@createMessage')->name('request.message');
             Route::get('/drivers', 'VehicleRequestDriverController@drivers')->name('drivers');
             Route::post('/drivers/submit', 'VehicleRequestDriverController@submitdrivers')->name('drivers.submit');
-            Route::get('/request/trip_completed/{id}', 'VehicleRequestController@tripcompleted')->name('request.trip_completed');
+            Route::post('/request/trip_completed/{id}', 'VehicleRequestController@tripcompleted')->name('request.trip_completed');
+            Route::post('/request/trip_completed/{id}', 'VehicleRequestController@tripcompleted_addDispatch')->name('request.trip_completed_addDispatch');
             Route::get('/request/dispatch_details/{id}', 'VehicleRequestController@dispatchDetails')->name('request.dispatch_details');
             Route::post('/request/dispatch_details', 'VehicleRequestController@cancelDispatchDetails')->name('request.cancel.dispatch_details');
             Route::get('/request/dispatch_details/{id}/edit', 'VehicleRequestController@editDispatchDetails')->name('request.edit.dispatch_details');

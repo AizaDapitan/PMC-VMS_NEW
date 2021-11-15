@@ -186,7 +186,8 @@
                         @if(isset($successMsg))
 
                         <script>
-                            $('#success').fadeOut();
+                            setTimeout(function(){ $('#success').fadeOut();
+                            }, 3000 );
                         </script>
 
                         <div id="success" class="alert alert-success alert-dismissable">
@@ -406,7 +407,7 @@
                                                 <div class="modal fade" id="active{{$item->id}}" tabindex="-1"
                                                     role="basic" aria-hidden="true">
                                                     <div class="modal-dialog">
-                                                        <form action="{{route('maintenance.user.update')}}"
+                                                        <form action="{{route('maintenance.dept.update')}}"
                                                             method="POST">
                                                             @csrf
                                                             <div class="modal-content">

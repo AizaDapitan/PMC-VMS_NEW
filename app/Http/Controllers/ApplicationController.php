@@ -75,7 +75,7 @@ class ApplicationController extends Controller
                 'reason' => $reason
             ]);
 
-            Session::flash('success'," Scheduled Maintenance Created Successfully...");
+            Session::flash('success',"A scheduled shutdown is added.");
             return redirect()->back();
         }
 
@@ -101,7 +101,7 @@ class ApplicationController extends Controller
                 'reason' => $reason
             ]);
 
-            return redirect()->route('maintenance.application.index')->with('success', 'Scheduled Maintenance has been updated!!');
+            return redirect()->route('maintenance.application.index')->with('success', 'A Scheduled Shutdown is updated.');
         }        
 
     }    

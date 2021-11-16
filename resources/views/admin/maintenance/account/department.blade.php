@@ -219,13 +219,13 @@
                                 <div class="tools"> </div>
                             </div>
                             <div class="portlet-body">
-                                <table class="table table-striped table-bordered table-hover" id="sample_2">
+                                <table class="table table-striped table-bordered table-hover" id="sample_101">
                                     <thead>
                                         <tr>
                                             <th>Department</th>
                                             <th>Role</th>
-                                            <th>Is Lock</th>
-                                            <th width="170px"></th>
+                                            <th>Lock/Unlock</th>
+                                            <th width="170px">Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>

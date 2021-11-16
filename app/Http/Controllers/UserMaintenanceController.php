@@ -122,13 +122,13 @@ class UserMaintenanceController extends Controller
             $user = User::find($id);
 
             if (!$user) {
-                Session::flash('error', "User Unlock Failed...");
+                Session::flash('error', "User Unlock Failed.");
                 return redirect()->back();
             }
 
             $user->update(['isLocked' => 0]);
 
-            Session::flash('success', "User has been Unlocked...");
+            Session::flash('success', "The User is unlocked.");
             return redirect()->back();
         }
 
@@ -138,13 +138,13 @@ class UserMaintenanceController extends Controller
             $user = User::find($id);
 
             if (!$user) {
-                Session::flash('error', "User Lock Failed... ");
+                Session::flash('error', "User Lock Failed.");
                 return redirect()->back();
             }
 
             $user->update(['isLocked' => 1]);
 
-            Session::flash('success', "User has been Locked... ");
+            Session::flash('success', "The User is locked.");
             return redirect()->back();
         }
 
@@ -154,13 +154,13 @@ class UserMaintenanceController extends Controller
             $user = User::find($id);
 
             if (!$user) {
-                Session::flash('error', "User Deactivated Failed...");
+                Session::flash('error', "User Deactivated Failed.");
                 return redirect()->back();
             }
 
             $user->update(['active' => 0]);
 
-            Session::flash('success', "User Deactivation Successfully...");
+            Session::flash('success', "A User is deactivated");
             return redirect()->back();
         }
 
@@ -176,7 +176,7 @@ class UserMaintenanceController extends Controller
 
             $user->update(['active' => 1]);
 
-            Session::flash('success', "User Activation Successfully...");
+            Session::flash('success', "A User is activated");
             return redirect()->back();
         }
 
@@ -209,7 +209,7 @@ class UserMaintenanceController extends Controller
                 'role_id' => $role_id,
             ]);
 
-            Session::flash('success', "User Updated Successfully...");
+            Session::flash('success', "A User is updated.");
             return redirect()->back();
         }
 
@@ -259,8 +259,8 @@ class UserMaintenanceController extends Controller
                 }
             }
 
-            Session::flash('success', "User Created Successfully...");
-            if ($request->session()->get('success') == "User Created Successfully...") {
+            Session::flash('success', "A user is added.");
+            if ($request->session()->get('success') == "A user is added.") {
                 $user->notify(new EmailNotification($user));
             }
             return redirect()->back();

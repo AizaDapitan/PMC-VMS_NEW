@@ -176,7 +176,7 @@
                                             <th>Name</th>
                                             <th>Description</th>
                                             <th>Status</th>
-                                            <th width="170px"></th>
+                                            <th width="170px">Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>

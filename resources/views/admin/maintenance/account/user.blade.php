@@ -178,11 +178,11 @@
                                     @if(Request::get('id'))
                                     <div class="row">
                                     @if($edit)
-                                       <button class="btn purple pull-right" type="submit" name="e_user">
+                                       <button class="btn blue pull-right" type="submit" name="e_user">
                                             <span class="glyphicon glyphicon-edit"></span> Update
                                         </button>
                                     @else
-                                        <button disabled class="btn purple pull-right" type="submit" name="e_user">
+                                        <button disabled class="btn blue pull-right" type="submit" name="e_user">
                                             <span class="glyphicon glyphicon-edit"></span> Update
                                         </button>
                                     @endif
@@ -236,8 +236,8 @@
                                             <th>Domain</th>
                                             <th>Department</th>
                                             <th>Role</th>
-                                            <th>Is Lock</th>
-                                            <th width="170px"></th>
+                                            <th>Lock/Unlock</th>
+                                            <th width="170px">Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -315,7 +315,8 @@
                                                                 <div class="modal-body"> Are you sure you want to <b>Lock</b> this user? </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-circle dark btn-outline" data-dismiss="modal">Close</button>
-                                                                    <button type="submit" name="lock_user" class="btn btn-circle green"><span class="fa fa-key"></span> Lock</button>
+                                                                    <button type="submit" name="lock_user" class="btn btn-circle red"><span
+                                                                            class="fa fa-lock"></span></span> Lock</button>
                                                                 </div>
                                                             </div>
                                                         </form>

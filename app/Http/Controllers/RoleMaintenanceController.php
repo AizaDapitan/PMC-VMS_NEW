@@ -69,7 +69,7 @@ class RoleMaintenanceController extends Controller
                     'active' => $active
                 ]);
 
-                Session::flash('success', " Role Created Successfully...");
+                Session::flash('success', "The role is added.");
                 return redirect()->back();
             }
         }
@@ -99,7 +99,7 @@ class RoleMaintenanceController extends Controller
                     'description' => $description
                 ]);
 
-                return redirect()->route('maintenance.role')->with('success', 'Role has been updated!!');
+                return redirect()->route('maintenance.role')->with('success', 'The Role is updated.');
             }
         }
 
@@ -108,13 +108,13 @@ class RoleMaintenanceController extends Controller
             $role = Role::find($id);
 
             if (!$role) {
-                Session::flash('errorMsg', "Role Activation Failed...");
+                Session::flash('error', "Role Activation Failed...");
                 return redirect()->back();
             }
 
             $role->update(['active' => 1]);
 
-            Session::flash('successMsg', "Role has been Activated...");
+            Session::flash('success', "The Role is activated.");
             return redirect()->back();
         }
 
@@ -124,13 +124,13 @@ class RoleMaintenanceController extends Controller
             $role = Role::find($id);
 
             if (!$role) {
-                Session::flash('errorMsg', "Role Deactivation Failed...");
+                Session::flash('error', "Role Deactivation Failed...");
                 return redirect()->back();
             }
 
             $role->update(['active' => 0]);
 
-            Session::flash('successMsg', "Role has been Deactivated...");
+            Session::flash('success', "The Role is deactivated.");
             return redirect()->back();
         }
     }

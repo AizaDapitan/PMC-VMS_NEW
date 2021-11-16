@@ -420,6 +420,7 @@ class VehicleRequestController extends Controller
 
         $vehicleR = VehicleRequest::create($inputs);
         $vehicleR->dept = (strlen($request->get('dept')) > 0 ? $request->get('dept') : $request->get('new_dept'));
+        $vehicleR->dept_id = 0;
         $vehicleR->status = VehicleRequestStatusEnum::NEW_REQUEST;
         //$vehicleR->lastStatusChanged = Carbon::now();
         $vehicleR->lastStatusChanged = date('Y-m-d H:i:s');

@@ -7,7 +7,7 @@
          <div class="page-content-wrapper">
             <div class="page-content">
                 
-               <form method="get" action="{{ route('form.dashboard') }}">
+               <form method="get" action="{{ route('downtime.downtimes') }}">
                   <div class="row">
                      <div class="col-md-12">
                         <!-- BEGIN PAGE TITLE & BREADCRUMB-->

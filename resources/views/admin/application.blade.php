@@ -216,7 +216,7 @@
                                             <th>Scheduled Date</th>
                                             <th>Scheduled Time</th>
                                             <th>Reason</th>
-                                            <th width="200px"></th>
+                                            <th width="200px">Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>

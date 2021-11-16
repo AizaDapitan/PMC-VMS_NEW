@@ -120,6 +120,7 @@ class SysMaintenanceUnitController extends Controller
             'color' => $request->get('color'),
             'vehicle_code' => $request->get('vehicle_code_new'),
             'is_dispose' => 0,
+            'odo_status' => 0
         ]);
 
         Session::flash('success', " Unit Created Successfully...");

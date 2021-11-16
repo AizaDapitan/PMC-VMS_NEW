@@ -76,7 +76,7 @@ class PermissionMaintenanceController extends Controller
                     'active' => $active
                 ]);
 
-                Session::flash('success', " Permission Created Successfully...");
+                Session::flash('success', "The permission is added.");
                 return redirect()->back();
             }
         }
@@ -107,7 +107,7 @@ class PermissionMaintenanceController extends Controller
                     'description' => $description
                 ]);
 
-                return redirect()->route('maintenance.permission')->with('success', 'Permission has been updated!!');
+                return redirect()->route('maintenance.permission')->with('success', 'The Permission is updated.');
             }
         }
 
@@ -116,13 +116,13 @@ class PermissionMaintenanceController extends Controller
             $permission = Permission::find($id);
 
             if (!$permission) {
-                Session::flash('errorMsg', "Permission Activation Failed...");
+                Session::flash('error', "Permission Activation Failed...");
                 return redirect()->back();
             }
 
             $permission->update(['active' => 1]);
 
-            Session::flash('successMsg', "Permission has been Activated...");
+            Session::flash('success', "The Permission is activated.");
             return redirect()->back();
         }
 
@@ -132,13 +132,13 @@ class PermissionMaintenanceController extends Controller
             $permission = Permission::find($id);
 
             if (!$permission) {
-                Session::flash('errorMsg', "Permission Deactivation Failed...");
+                Session::flash('error', "Permission Deactivation Failed...");
                 return redirect()->back();
             }
 
             $permission->update(['active' => 0]);
 
-            Session::flash('successMsg', "Permission has been Deactivated...");
+            Session::flash('success', "The Permission is deactivated.");
             return redirect()->back();
         }
     }

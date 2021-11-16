@@ -151,7 +151,7 @@ class DowntimeController extends Controller
             $downtime->required_daily_availability = $required_daily_availability;
             $downtime->tdowntime = $tdowntime;
             $downtime->assignedTo = $request->input('assignedTo');
-            $downtime->active =1;
+            $downtime->active = 1;
 
             $downtime->save();
         }
@@ -200,7 +200,7 @@ class DowntimeController extends Controller
             ->first();
 
         $crews = str_replace("|", ",", $result['mechanics']);
-//  dd($result);
+        //  dd($result);
         return view('admin.downtime.downtime_edit', compact('mechanic_option2', 'mechanic_options', 'unit', 'crews', 'assigned', 'result', 'unitStatus', 'id'));
     }
 
@@ -246,7 +246,7 @@ class DowntimeController extends Controller
                 reportedDate = '" . $request->input('reported_date') . "',
                 status = '" . $request->input('status') . "',
                 from12 = '" . $from12 . "',
-                from7 = '" .$from7 . "',
+                from7 = '" . $from7 . "',
                 trepair_days = '" . $trepair_days . "',
                 trepair_hours = '" . $trepair_hours . "',
                 shop_days = '" . $shop_days . "',
@@ -272,15 +272,15 @@ class DowntimeController extends Controller
      */
     public function destroy($id)
     {
-        
-            $downtime = Downtime::find($id);
 
-            
-            $downtime->update(['active' => 0]);
+        $downtime = Downtime::find($id);
 
-            Session::flash('success', "Downtime has been deleted... ");
-            return redirect()->back();
-            // return redirect()->route('form.dashboard');
+
+        $downtime->update(['active' => 0]);
+
+        Session::flash('success', "Downtime has been deleted... ");
+        return redirect()->back();
+        // return redirect()->route('form.dashboard');
     }
 
     public function downtimes(Request $request)
@@ -341,13 +341,48 @@ class DowntimeController extends Controller
             ));
         }
 
+        $startDate =  $request->input('startDate');
+        $endDate = $request->input('endDate');
+        $query = "
+        select
+            d.dateStart as ds,
+            d.dateEnd as de,
+            d.reportedDate as reported,
+            d.addedDate as added,
+            d.*,
+            u.name as uni,
+            u.type
+        from
+            downtime d
+        left join unit u on u.id = d.unitId
+        where
+        (
+            (
+                d.dateStart >= '" . $startDate . "'
+                and d.dateEnd <= '" . $endDate . " 23:59:59'
+                )
+                OR (
+                d.dateEnd >= '" . $startDate . "'
+                and d.dateEnd <=  '" . $endDate . " 23:59:59' 
+                )
+        )
+        and d.active = 1
+        order by
+        d.id desc";
+
+        $downtimes = DB::select($query);
         return view(
             'admin.downtime.downtimes',
-            'create',
-            'edit',
-            'delete',
-            'print',
-            'upload'
+            compact(
+                'endDate',
+                'startDate',
+                'downtimes',
+                'create',
+                'edit',
+                'delete',
+                'print',
+                'upload'
+            )
         );
     }
 }

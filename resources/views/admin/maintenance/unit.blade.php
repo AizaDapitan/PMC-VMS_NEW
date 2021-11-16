@@ -231,25 +231,30 @@
                                                     <td>{{$item->type}}</td>
                                                     <td align="right">{{$item->required_availability_hours}}</td>
                                                     <td align="right">
-                                                        <form action="{{route('maintenance.unit.destroy', ['unit' => $item->id])}}" method="POST">
+                                                        <form  action="{{route('maintenance.unit.destroy', ['unit' => $item->id])}}" method="POST">
                                                             @method('delete')
                                                             @csrf
                                                             @if($edit)
-                                                            <a href="{{ route('maintenance.unit.edit', ['unit' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
-                                                            @if($item->is_dispose==0)
-                                                            <a href="maintenance/unit/{{ $item->id }}/dispose" class="btn blue btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Deactivate"><i class="fa fa-times"></i></a>
+                                                                <a href="{{ route('maintenance.unit.edit', ['unit' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></a>
+                                                                @if($item->is_dispose==0)
+                                                                <a onclick="return confirm('Are you sure you want to deactivate unit?')"  href="maintenance/unit/{{ $item->id }}/dispose" class="btn blue btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Deactivate"><i class="fa fa-times"></i></a>
+                                                                @else
+                                                                <a onclick="return confirm('Are you sure you want to Activate unit?')" href="maintenance/unit/{{ $item->id }}/undispose" class="btn purple btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Activate"><i class="fa fa-check"></i></a>
+                                                                @endif
                                                             @else
-                                                            <a href="maintenance/unit/{{ $item->id }}/undispose" class="btn purple btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Activate"><i class="fa fa-check"></i></a>
+                                                                <button disabled href="{{ route('maintenance.unit.edit', ['unit' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></button>
+                                                                @if($item->is_dispose==0)
+                                                                <button disabled href="maintenance/unit/{{ $item->id }}/dispose" class="btn blue btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Deactivate"><i class="fa fa-times"></i></button>
+                                                                @else
+                                                                <button disabled href="maintenance/unit/{{ $item->id }}/undispose" class="btn purple btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Activate"><i class="fa fa-check"></i></button>
+                                                                @endif
                                                             @endif
+                                                            @if($delete)
+                                                            <button onclick="return confirm('Are you sure  you want to delete unit?')" type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>                                                            
                                                             @else
-                                                            <button disabled href="{{ route('maintenance.unit.edit', ['unit' => $item->id]) }}" class="btn green btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Edit"><i class="fa fa-edit"></i></button>
-                                                            @if($item->is_dispose==0)
-                                                            <button disabled href="maintenance/unit/{{ $item->id }}/dispose" class="btn blue btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Deactivate"><i class="fa fa-times"></i></button>
-                                                            @else
-                                                            <button disabled href="maintenance/unit/{{ $item->id }}/undispose" class="btn purple btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Activate"><i class="fa fa-check"></i></button>
+                                                            <button disabled onclick="return confirm('Are you sure you want to delete unit?')" type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>                                                            
+                                                            
                                                             @endif
-                                                            @endif
-                                                            <button type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>                                                            
                                                         </form>                                                        
                                                     </td>
                                                 </tr>

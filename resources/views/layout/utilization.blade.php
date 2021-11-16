@@ -170,6 +170,7 @@
 
 <script type="text/javascript" src="{{ asset('metronic/datepicker/js/jquery-1.8.3.min.js') }}" charset="UTF-8"></script>
 <script type="text/javascript" src="{{ asset('metronic/datepicker/js/bootstrap-datetimepicker.js') }}" charset="UTF-8"></script>
+   <script src="{{ asset('js/excel/src/jquery.table2excel.js') }}"></script>
 <script src="{{ asset('js/notifications.js') }}"></script>
 <script src="{{ asset('js/comments.js') }}"></script>
 @yield('javascript')
@@ -177,6 +178,27 @@
 
 @endif
 <script>
+      function exportToExcel(table){
+         $('#filter_head').remove();
+            jQuery(table).table2excel({
+               name: "VMS",
+               filename: "VMS" ,//do not include extension
+               exclude_img: true,
+               exclude_links: true,
+               exclude_inputs: true,
+               exclude: ".noExl",
+
+            }); 
+         }
+   </script>
+
+<script>
+   jQuery(document).ready(function() {    
+            Metronic.init(); // init metronic core components
+            Layout.init(); // init current layout
+            TableAdvanced.init();
+            //exportToExcel('#maintenance_excel');
+         });
    var modal = document.getElementById("myModal1");
    var tday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
    var tmonth = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

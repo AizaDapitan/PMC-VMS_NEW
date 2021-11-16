@@ -148,7 +148,7 @@
                                           <td>{{$item->repairType}}</td>
                                           <td>{{$item->downtimeCategory}}</td>
                                           <td>{{$item->workDetails}}</td>
-                                          <td>{!! str_replace("|", ", ", $$item->mechanics) !!}</td>
+                                          <td>{!! str_replace("|", ", ", $item->mechanics) !!}</td>
                                           <td>{{$item->from12}}</td>                                                  
                                           <td>{{$item->from7}}</td>
                                           <td>{{$item->trepair_days}}</td>
@@ -160,7 +160,7 @@
                                           <td>{{$item->tdowntime}}</td>
                                           <td>{{$item->addedBy}}</td>
                                           <td>{{date('Y-m-d H:i:s', strtotime($item->added))}}</td>
-                                       <td style="width:100px;"><a href="#" class="btn purple btn-xs" onclick='window.open("{{ route("downtime.edit", ["id" => $item->id]) }}","displayWindow","toolbar=no,scrollbars=yes,width=1200,height=700");' return false;><i class="fa fa-edit"></i></a>
+                                       <td style="width:100px;"><a href="#" class="btn purple btn-xs" onclick='window.open("{{ route('downtime.downtime_edit', ['id' => $item->id]) }}","displayWindow","toolbar=no,scrollbars=yes,width=1200,height=700");' return false;><i class="fa fa-edit"></i></a>
                                              <a href="#" class="btn red btn-xs deletedl" onclick="deleted({{$item->id}});"><i class="fa fa-minus-circle"></i></a>
                                           </td>
                                        </tr>

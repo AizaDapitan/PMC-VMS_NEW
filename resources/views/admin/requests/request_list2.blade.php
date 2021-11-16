@@ -424,7 +424,7 @@
 							<span class="fa fa-plus"></span> Add New
 						</button>
 					@endif
-                <a class="btn green btn-sm" href="{{ route('vehicle.request.export') }}" style="margin-left: 10px;">
+                <a class="btn green btn-sm" onclick="exportToExcel('#sample_4')" style="margin-left: 10px;">
                     <span class="fa fa-download"></span> Download List
                 </a>                       
                 </div> 
@@ -433,7 +433,7 @@
         <div class="row">                  
             <div class="col-md-12">                     
                 <div class="clearfix"></div>
-                <table style="font-size:12px;" class="table table-striped table-bordered table-hover js-dynamitable">
+                <table style="font-size:12px;" class="table table-striped table-bordered table-hover js-dynamitable" id="sample_4">
                 <thead id="nofilter_head">                                    
                     <tr>
                         <th style="font-size:11px;">Request No. </th>

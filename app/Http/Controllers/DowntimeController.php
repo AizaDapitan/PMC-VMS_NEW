@@ -327,7 +327,6 @@ class DowntimeController extends Controller
             order by
             d.id desc";
 
-            dd($query);
             $downtimes = DB::select($query);
 
             return view('admin.downtime.downtimes', compact(

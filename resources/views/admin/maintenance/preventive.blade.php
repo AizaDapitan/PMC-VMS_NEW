@@ -116,7 +116,7 @@
 
                                                         @endif
                                                         @if($delete)
-                                                        <button type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>
+                                                        <button onclick="return confirm('Are you sure you want to delete preventive maintenance?')"  type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>
                                                         @else
                                                         <button disabled type="submit" class="btn red btn-xs tooltips" data-container="body" data-placement="top" data-original-title="Delete"><i class="fa fa-minus-circle"></i></button>
                                                         @endif

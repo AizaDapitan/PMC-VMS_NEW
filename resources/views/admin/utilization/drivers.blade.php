@@ -191,7 +191,7 @@
 
                                     @if($item->isActive == 0)
 
-                                        <button type="submit" class="btn btn-xs blue">Enable</button>
+                                        <button type="submit" class="btn btn-xs blue"onclick="return confirm('Are you sure you want to disable this driver?')">Enable</button>
 
                                     @else
 

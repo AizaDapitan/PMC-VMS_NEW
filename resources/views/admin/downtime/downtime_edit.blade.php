@@ -70,7 +70,7 @@
 								<div class="col-md-12 margin-bottom-10">
 									<label class="control-label col-md-3">Work Order</label>
 									<div class="col-md-9">
-										<input type="text" size="16" name="work_order" id="work_order" class="form-control" required maxlength="50" value="workOrder">
+										<input type="text" size="16" name="work_order" id="work_order" class="form-control" required maxlength="50" value="{{ $result->workOrder }}">
 									</div>
 								</div>
 							</div>
@@ -159,9 +159,7 @@
 
 									<label class="control-label col-md-3">Work Details:</label>
 									<div class="col-md-9">
-										<textarea class="form-control" rows="5" name="work_details" placeholder="Work Details">
-										{{ $result->workDetails }}
-										</textarea>
+										<textarea class="form-control" rows="5" name="work_details" placeholder="Work Details">{{ $result->workDetails }}</textarea>
 									</div>
 								</div>
 							</div>
@@ -170,9 +168,7 @@
 								<div class="col-md-12 margin-bottom-10">
 									<label class="control-label col-md-3">Remarks:</label>
 									<div class="col-md-9">
-										<textarea class="form-control" rows="5" name="remarks" placeholder="Remarks">
-										{{$result->remarks}}
-										</textarea>
+										<textarea class="form-control" rows="5" name="remarks" placeholder="Remarks">{{$result->remarks}}</textarea>
 									</div>
 
 								</div>
@@ -183,7 +179,7 @@
 
 									<label class="control-label col-md-3">Mechanics:</label>
 									<div class="col-md-9">
-										<input type="hidden" id="select2_sample5" name="mechanics" class="form-control select2" value="{{ $crews }}">
+										<input id="select2_sample5" name="mechanics" class="form-control select2" value="{{ $crews }}">
 									</div>
 
 								</div>

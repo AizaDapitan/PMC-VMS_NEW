@@ -442,6 +442,7 @@ class VehicleRequestController extends Controller
         $vehicle_request->status = 'New Request';
         $vehicle_request->lastStatusChanged = date('Y-m-d H:i:s');
         $vehicle_request->lastStatusChangedBy = Auth::user()->domain;
+        $vehicle_request->dept_id = 0;
         $vehicle_request->save();
 
         if ($request->get('dept_input') && !$request->get('dept_select')) {

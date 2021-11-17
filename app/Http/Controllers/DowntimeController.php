@@ -238,7 +238,7 @@ class DowntimeController extends Controller
                 dateStart = '" . $start . "',
                 dateEnd = '" . $end . "',
                 remarks = '" . $request->input('remarks') . "',
-                workOrder =  '" . $request->input('remarks') . "',
+                workOrder =  '" . $request->input('work_order') . "',
                 isScheduled = '" . $request->input('dtype') . "',
                 mechanics = '" . $mechanics . "',
                 repairType = '" . $repair_type . "',

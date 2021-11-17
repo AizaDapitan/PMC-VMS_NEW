@@ -783,7 +783,7 @@
    function editRequest(x){
 		$.ajax({
 			method: "GET",
-			url: `/vehicle/request/${x}/details`,
+			url: `{{env('APP_URL')}}/vehicle/request/${x}/details`,
 		})
 		.done(function( d ) {
 			console.log(d)

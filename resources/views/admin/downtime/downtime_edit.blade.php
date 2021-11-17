@@ -179,7 +179,7 @@
 
 									<label class="control-label col-md-3">Mechanics:</label>
 									<div class="col-md-9">
-										<input id="select2_sample5" name="mechanics" class="form-control select2" value="{{ $crews }}">
+										<input id="select2_sample5" name="mechanics" class="form-control" value="{{ $crews }}" required>
 									</div>
 
 								</div>
@@ -248,7 +248,7 @@
 
 			</div>
 			<div class="modal-footer" id="footermode">
-				<button type="button" class="btn default" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn default" data-dismiss="modal" onclick="self.close()">Cancel</button>
 				<input type="submit" class="btn blue" value="Update">
 			</div>
 		</form>
@@ -257,8 +257,6 @@
 	@endsection
 
 	@push('javascript')
-	<!-- <script src="metronic/assets/admin/pages/scripts/tasks.js" type="text/javascript"></script>
-END PAGE LEVEL SCRIPTS -->
 	<script>
 		jQuery(document).ready(function() {
 			Metronic.init(); // init metronic core components
@@ -269,9 +267,7 @@ END PAGE LEVEL SCRIPTS -->
 	<script>
 		var ComponentsDropdowns = function() {
 
-			let mech_tags = {
-				!!json_encode($mechanic_option2 ?? '') !!
-			}
+			let mech_tags = {!! json_encode($mechanic_option2 ?? '') !!}
 			mech_tags = mech_tags.split(",");
 
 			var handleSelect2 = function() {

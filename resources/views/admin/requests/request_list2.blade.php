@@ -774,7 +774,7 @@
    function cancel(x){        
       var r = confirm("Are you sure you want to cancel this request?");
       if (r == true) {
-         window.location = `/vehicle/${x}/cancel`;
+         window.location = `{{env('APP_URL')}}/vehicle/${x}/cancel`;
       } else {
          return false;
       }

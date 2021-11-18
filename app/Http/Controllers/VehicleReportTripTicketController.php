@@ -7,17 +7,20 @@ use App\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\RoleRightService;
+use App\Services\ReportService;
 
 class VehicleReportTripTicketController extends Controller
 {
     public function __construct(
-		RoleRightService $roleRightService
+		RoleRightService $roleRightService,
+		ReportService $reportService
 	) {
+		$this->reportService = $reportService;
 		$this->roleRightService = $roleRightService;
 	}
     public function index(Request $request)
     {
-		$rolesPermissions = $this->roleRightService->hasPermissions("TTrip Tickets");
+		$rolesPermissions = $this->roleRightService->hasPermissions("Trip Tickets");
 		if (!$rolesPermissions['view']) {
 		    abort(401);
 		}

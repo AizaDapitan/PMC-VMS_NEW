@@ -38,13 +38,16 @@ use Illuminate\Support\Facades\DB as FacadesDB;
 
 use Illuminate\Support\Facades\Session;
 use App\Services\RoleRightService;
+use App\Services\ReportService;
 
 class VehicleRequestController extends Controller
 {
-    public function __construct(RoleRightService $roleRightService)
+    public function __construct(RoleRightService $roleRightService,
+    ReportService $reportService)
     {
         $this->validator = new Validators();
         $this->roleRightService = $roleRightService;
+		$this->reportService = $reportService;
     }
 
     public function list(Request $request, $item = null)
